@@ -23,18 +23,19 @@ export default class StartPage extends Vue {
   username: string = "";
   password: string = "";
 
-  async created() {}
+  async created() {
+    var response = await this.$api.TownService.GetAllTown();
+    console.log(response);
+  }
 
   async SingUp() {
     var request = new SingUpReqeust({
       userName: this.username,
       password: this.password,
     });
-    await this.$api.AuthService.SingUpAsync(request)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
+    await this.$api.AuthService.SingUpAsync(request).then((res) => {
+      console.log(res);
+    });
   }
 
   async SingIn() {
