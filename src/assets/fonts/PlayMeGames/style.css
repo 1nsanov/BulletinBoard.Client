@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'PlayMeGames';
+  src: url('./PlaymegamesReguler.ttf') format('truetype');
+  font-weight: 600
+}
+
+@font-face {
+  font-family: 'LightPixel';
+  src: url('./light_pixel-7.ttf') format('truetype');
+  font-weight: 700
+}
+
+@font-face {
+  font-family: 'MiniPixel';
+  src: url('./mini_pixel-7.ttf') format('truetype');
+  font-weight: 600
+}
