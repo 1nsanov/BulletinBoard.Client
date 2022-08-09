@@ -23,12 +23,8 @@ export default class StartPage extends Vue {
     };
   }
 
-  GoToRegister() {
-    this.$router.push({ name: "register" });
-  }
-
-  GoToLogin() {
-    this.$router.push({ name: "login" });
+  created(){
+    this.$api.AuthService.testMethod();
   }
 }
 </script>
@@ -37,7 +33,7 @@ export default class StartPage extends Vue {
 .start-page {
   display: flex;
   flex-direction: column;
-  margin-top: 100px;
+  padding-top: 100px;
   .start-page_register {
     margin: 0 0 35px 0;
   }

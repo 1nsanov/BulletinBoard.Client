@@ -8,9 +8,13 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import ContentLayout from "./content-layout.vue";
 
 @Options({
   name: "base-layout",
+  components: {
+    ContentLayout,
+  },
 })
 export default class BaseLayout extends Vue {
 }
