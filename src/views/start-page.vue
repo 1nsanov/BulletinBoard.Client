@@ -23,8 +23,12 @@ export default class StartPage extends Vue {
     };
   }
 
-  created(){
-    this.$api.AuthService.testMethod();
+  async created() {
+    await this.$api.AuthService.testMethod()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   }
 }
 </script>

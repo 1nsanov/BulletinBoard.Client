@@ -5,7 +5,18 @@ export default class AuthService {
     this.apiUrl = apiUrl;
   }
 
-  testMethod() {
-    console.log("Тест метод сервиса апи", this.apiUrl);
+  async testMethod(): Promise<boolean> {
+    return new Promise((rs, rj) => {
+      const response = fetch(this.apiUrl + "/auth/SingUp", {
+
+      })
+
+      if (true) {
+        rs(true);
+      }
+      else {
+        rj(false)
+      }
+    })
   }
 }
