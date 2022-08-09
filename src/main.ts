@@ -9,7 +9,7 @@ import '../src/assets/fonts/PlayMeGames/style.css'
 const app = createApp(App);
 components(app)
 
-const apiUrl = "http://localhost:7000"
+const apiUrl = "https://localhost:7219"
 app.use(Api, apiUrl);
 
 app.use(store).use(router).mount('#app')
