@@ -1,5 +1,6 @@
 <template>
   <div class="home-page">
+    {{ $api.AuthService.IsLogin }}
     Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
     accusantium porro officia in fugiat dolores, exercitationem pariatur, odio
     distinctio adipisci molestiae odit nemo suscipit inventore recusandae quos
@@ -13,7 +14,9 @@ import { Options, Vue } from "vue-class-component";
   name: "home-page",
 })
 export default class HomePage extends Vue {
-  
+  created() {
+    this.$api.AuthService.getUserFromCookie();
+  }
 }
 </script>
 

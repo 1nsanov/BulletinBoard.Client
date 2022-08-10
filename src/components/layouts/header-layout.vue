@@ -47,6 +47,7 @@ export default class HeaderLayout extends Vue {
   }
 
   goToAuth() {
+    this.$api.AuthService.removeUserFromCookie();
     this.$router.push({ name: "auth" });
   }
 

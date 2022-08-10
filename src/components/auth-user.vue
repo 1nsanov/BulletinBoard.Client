@@ -71,6 +71,14 @@
             >{{ recoveryMode ? "Восстановить" : textButton }}</ui-button
           >
         </div>
+        <div class="auth-user_form_content_confirm">
+          <ui-button
+            :style="{ width: `100%` }"
+            color="orange"
+            @onClick="goToHome"
+            >Вернуться на главную</ui-button
+          >
+        </div>
         <div class="auth-user_form_content_footer" v-if="!recoveryMode">
           {{ footerMsg }}<span @click="swicthMode">{{ actionText }}</span>
         </div>
@@ -136,7 +144,7 @@ export default class AuthUser extends Vue {
   }
 
   async confirm() {
-    this.innerErrMsg = ""
+    this.innerErrMsg = "";
     if (!this.recoveryMode) {
       let user = this.createUser();
       this.$emit("getData", user);
@@ -171,6 +179,9 @@ export default class AuthUser extends Vue {
   }
   recoveryModeSwicth() {
     this.recoveryMode = !this.recoveryMode;
+  }
+  goToHome() {
+    this.$router.push({ name: "home" });
   }
 }
 </script>
