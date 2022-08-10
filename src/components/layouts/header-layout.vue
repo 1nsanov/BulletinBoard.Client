@@ -91,6 +91,7 @@ export default class HeaderLayout extends Vue {
       cursor: pointer;
       width: 50px;
       height: 100%;
+      margin: 0 10px;
       img {
         width: 40px;
         transition: 0.3s ease-in-out;

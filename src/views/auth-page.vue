@@ -1,73 +1,80 @@
 <template>
   <div class="auth-page">
-    <ui-input v-model="username" />
-    <ui-input v-model="password" />
-    <div class="auth-page_register">
-      <ui-button size="big" @onClick="SingUp">Registration</ui-button>
-    </div>
-    <div class="auth-page_login">
-      <ui-button color="green" size="big" @onClick="SingIn">Login</ui-button>
-    </div>
-    <ui-button size="medium" @onClick="Recovery">Recovery</ui-button>
+    <auth-user
+      @getData="getData"
+      @swicthMode="swicthMode"
+      @recovery="recovery"
+      :isLogin="isLogin"
+      :errMsg="errMsg"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import SingInReqeust from "@/api/services/AuthService/models/Request/SingInReqeust";
 import SingUpReqeust from "@/api/services/AuthService/models/Request/SingUpReqeust";
+import AuthUser from "@/components/auth-user.vue";
+import UserFormModel from "../models/UserFormModel";
 import { Options, Vue } from "vue-class-component";
 @Options({
   name: "auth-page",
+  components: { AuthUser },
 })
 export default class AuthPage extends Vue {
-  username: string = "";
-  password: string = "";
+  isLogin: boolean = true;
+  errMsg: string = "";
 
-  async created() {
-  }
-
-  async SingUp() {
+  async SingUp(user: UserFormModel) {
     var request = new SingUpReqeust({
-      userName: this.username,
-      password: this.password,
+      userName: user.username,
+      password: user.password,
     });
     await this.$api.AuthService.SingUpAsync(request).then((res) => {
-      console.log(res);
+      if (res.isSuccess) {
+        this.SingIn(user);
+      } else this.errMsg = res.message;
     });
   }
 
-  async SingIn() {
+  async SingIn(user: UserFormModel) {
     var request = new SingInReqeust({
-      userName: this.username,
-      password: this.password,
+      userName: user.username,
+      password: user.password,
     });
     await this.$api.AuthService.SingInAsync(request).then((res) => {
-      this.$api.AuthService.User = res.value;
-      console.log(this.$api.AuthService.User);
+      // this.$api.AuthService.User = res.value;
+      if (res.isSuccess) {
+        this.$router.push({ name: "home" });
+      } else this.errMsg = res.message;
     });
   }
 
-  async Recovery() {
-    let isExistUser: boolean = false;
-    await this.$api.AuthService.CheckExistUser({
-      userName: this.username,
-    }).then((res) => {
-      isExistUser = res.isSuccess;
-      console.log(res);
-    });
-
-    if (!isExistUser) return;
-
-    await this.RecoveryPassword();
-  }
-
-  async RecoveryPassword() {
+  async RecoveryPassword(user: UserFormModel) {
     await this.$api.AuthService.RecoveryPassword({
-      userName: this.username,
-      password: this.password,
+      userName: user.username,
+      password: user.password,
     }).then((res) => {
-      console.log(res);
+      if (res.isSuccess) {
+        alert("Восстановлениие прошло успешно");
+        location.reload();
+      } else this.errMsg = res.message;
     });
+  }
+
+  async getData(user: UserFormModel) {
+    this.errMsg = "";
+    if (this.isLogin) await this.SingIn(user);
+    else await this.SingUp(user);
+  }
+
+  async recovery(user: UserFormModel) {
+    this.errMsg = "";
+    await this.RecoveryPassword(user);
+  }
+
+  swicthMode() {
+    this.errMsg = "";
+    this.isLogin = !this.isLogin;
   }
 }
 </script>
