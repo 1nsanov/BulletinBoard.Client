@@ -1,11 +1,11 @@
 <template>
-  <div class="start-page">
+  <div class="auth-page">
     <ui-input v-model="username" />
     <ui-input v-model="password" />
-    <div class="start-page_register">
+    <div class="auth-page_register">
       <ui-button size="big" @onClick="SingUp">Registration</ui-button>
     </div>
-    <div class="start-page_login">
+    <div class="auth-page_login">
       <ui-button color="green" size="big" @onClick="SingIn">Login</ui-button>
     </div>
     <ui-button size="medium" @onClick="Recovery">Recovery</ui-button>
@@ -17,15 +17,13 @@ import SingInReqeust from "@/api/services/AuthService/models/Request/SingInReqeu
 import SingUpReqeust from "@/api/services/AuthService/models/Request/SingUpReqeust";
 import { Options, Vue } from "vue-class-component";
 @Options({
-  name: "start-page",
+  name: "auth-page",
 })
-export default class StartPage extends Vue {
+export default class AuthPage extends Vue {
   username: string = "";
   password: string = "";
 
   async created() {
-    var response = await this.$api.TownService.GetAllTown();
-    console.log(response);
   }
 
   async SingUp() {
@@ -75,11 +73,11 @@ export default class StartPage extends Vue {
 </script>
 
 <style lang="less" scoped>
-.start-page {
+.auth-page {
   display: flex;
   flex-direction: column;
   padding-top: 100px;
-  .start-page_register {
+  .auth-page_register {
     margin: 0 0 35px 0;
   }
 }

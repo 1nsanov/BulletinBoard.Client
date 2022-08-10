@@ -1,9 +1,14 @@
 <template>
   <div class="dropdown-haeder-filter">
-    <div class="placeholder-container" @click="toggleShowMenu">
+    <div
+      class="placeholder-container"
+      :class="{ 'active-placeholder': isShowMenu }"
+      @click="toggleShowMenu"
+    >
       <div class="placeholder" v-if="current">
         {{ current.Name }}
       </div>
+      <div class="placeholder" v-else>-</div>
     </div>
     <div
       v-if="isShowMenu"
@@ -63,6 +68,7 @@ export default class DropdownHeaderFilter extends Vue {
     this.innerItems.forEach((x) => {
       x.IsActive = x.Id === item.Id;
     });
+    this.isShowMenu = false;
     this.$emit("select", item);
   }
 }
@@ -86,9 +92,8 @@ export default class DropdownHeaderFilter extends Vue {
     cursor: pointer;
     border-left: 5px solid #fff;
     transition: 0.3s ease-in-out;
-    .placeholder {
-    }
   }
+  .active-placeholder,
   .placeholder-container:hover {
     background: rgb(55, 163, 240);
   }

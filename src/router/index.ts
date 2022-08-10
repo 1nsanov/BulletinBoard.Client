@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw, RouterView } from 'vue-router'
 import BaseLayout from '../components/layouts/base-layout.vue'
-import StartPage from "../views/start-page.vue"
+import HomePage from "../views/home-page.vue"
+import AuthPage from "../views/auth-page.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -9,9 +10,14 @@ const routes: Array<RouteRecordRaw> = [
     component: BaseLayout,
     children: [
       {
-        name: 'start',
+        name: 'home',
         path: '/',
-        component: StartPage,
+        component: HomePage,
+      },
+      {
+        name: 'auth',
+        path: '/authorization',
+        component: AuthPage,
       },
     ],
   }

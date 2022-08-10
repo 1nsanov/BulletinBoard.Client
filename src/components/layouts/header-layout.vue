@@ -1,16 +1,23 @@
 <template>
   <div class="header">
-    <div class="header_main _container">
+    <div class="header_main _container" v-if="!isAuthorization">
+      <div class="header_main_auth">
+        <img src="@/assets/icons/door-enter.svg" alt="" />
+      </div>
       <div class="header_main_content">
         <dropdown-header-filter :items="towns" @select="selectTown" />
-        <dropdown-header-filter :items="towns" />
-        <dropdown-header-filter :items="towns" />
+        <dropdown-header-filter :items="categories" />
+        <dropdown-header-filter :items="subCategories" />
+      </div>
+      <div class="header_main_auth" @click="goToAuth">
+        <img src="@/assets/icons/door-enter.svg" alt="" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 import OptionModel from "../UI/dropdown-haeder-filter/models/OptionModel";
 @Options({
@@ -18,6 +25,8 @@ import OptionModel from "../UI/dropdown-haeder-filter/models/OptionModel";
 })
 export default class HeaderLayout extends Vue {
   towns: Array<OptionModel> = [];
+  categories: Array<OptionModel> = [];
+  subCategories: Array<OptionModel> = [];
 
   created() {
     this.GetAllTown();
@@ -35,6 +44,14 @@ export default class HeaderLayout extends Vue {
 
   selectTown(town: OptionModel) {
     console.log(town);
+  }
+
+  goToAuth() {
+    this.$router.push({ name: "auth" });
+  }
+
+  get isAuthorization(){
+    return this.$route.name === "auth"
   }
 }
 </script>
@@ -65,6 +82,23 @@ export default class HeaderLayout extends Vue {
       @media screen and (max-width: 994px) {
         padding: 0 15px;
         max-width: calc(994px + 15px);
+      }
+    }
+    .header_main_auth {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      width: 50px;
+      height: 100%;
+      img {
+        width: 40px;
+        transition: 0.3s ease-in-out;
+      }
+    }
+    .header_main_auth:hover {
+      img {
+        transform: scale(1.2);
       }
     }
   }
