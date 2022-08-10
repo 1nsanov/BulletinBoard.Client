@@ -14,14 +14,7 @@
     :disabled="disabled"
     :style="{ opacity: disabled ? `0.5` : `1` }"
   >
-    <span
-      :class="{
-        'default-thema-text': color === 'default',
-        'green-thema-text': color === 'green',
-        'orange-thema-text': color === 'orange',
-        'red-thema-text': color === 'red',
-      }"
-    >
+    <span>
       <slot></slot>
     </span>
   </button>
@@ -53,33 +46,10 @@ export default class UiButton extends Vue {
   font-family: inherit;
   cursor: pointer;
   border-radius: 10px;
-  transition: ease 0.3s;
+  transition: 0.3s ease-in-out;
   letter-spacing: inherit;
-  //themas
-  .default-thema-text {
-    background: linear-gradient(180deg, #ffffff 0%, #6fc2ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .green-thema-text {
-    background: linear-gradient(180deg, #ffffff 0%, #9effa8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .orange-thema-text {
-    background: linear-gradient(180deg, #ffffff 0%, #ffd66b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .red-thema-text {
-    background: linear-gradient(180deg, #ffffff 0%, #ff6363 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+  color: #fff;
+  font-weight: 700;
 }
 .base-button:hover {
   filter: contrast(2.2);

@@ -4,7 +4,7 @@ import components from './components/UI'
 import router from './router'
 import store from './store'
 import Api from "./api"
-import '../src/assets/fonts/PlayMeGames/style.css'
+import '../src/assets/fonts/style.css'
 
 const app = createApp(App);
 components(app)

@@ -1,14 +1,14 @@
 <template>
   <div class="ui-input">
-    <div class="ui-input_icon" v-if="isIcon">
+    <!-- <div class="ui-input_icon" v-if="isIcon">
       <slot></slot>
-    </div>
+    </div> -->
     <input
       class="base-input"
-      :style="{ padding: isIcon ? '0px 25px 0 49px' : '0 25px 0 25px' }"
       :class="{
         'default-thema': thema === 'default',
         'dark-thema': thema === 'dark',
+        'isError': isError,
       }"
       :type="type"
       :placeholder="`${placeholder}`"
@@ -30,7 +30,8 @@ export default class UiInput extends Vue {
   @Prop({ default: "text", type: String }) type!: string;
   @Prop({ default: "", type: String }) placeholder!: string;
   @Prop({ default: "default", type: String }) thema!: string;
-  @Prop({ default: false, type: Boolean }) isIcon!: boolean;
+  // @Prop({ default: false, type: Boolean }) isIcon!: boolean;
+  @Prop({ default: false }) isError: boolean;
 
   @Prop({ type: String }) modelValue!: string;
   @Emit("update:modelValue") updateInput(event: any) {
@@ -60,7 +61,16 @@ export default class UiInput extends Vue {
     letter-spacing: inherit;
     width: 100%;
     font-size: 16px;
+    padding: 0 30px 0 10px;
+    transition: 0.2s ease-in-out;
+    &.isError {
+      border-color: #f20f0f;
+    }
   }
+  .base-input:focus {
+    border-color: #1977d6;
+  }
+
   .default-thema {
     border: 2px solid #ffffff;
     color: #ffffff;
@@ -72,8 +82,8 @@ export default class UiInput extends Vue {
     color: rgba(255, 255, 255, 0.5);
   }
   .dark-thema {
-    border: 2px solid #1E373F;
-    color: #1E373F;
+    border: 2px solid #1e373f;
+    color: #1e373f;
     border-radius: 10px;
     background: transparent;
     height: 40px;
