@@ -1,5 +1,5 @@
-import BaseResponse from "../models/BaseResponse";
-import BaseResponseT from "../models/BaseResponseT";
+import BaseResponse from "../../models/BaseResponse";
+import BaseResponseT from "../../models/BaseResponseT";
 import CreateCategoryRequest from "./models/Request/CreateCategoryRequest";
 import RemoveCategoryRequest from "./models/Request/RemoveCategoryRequest";
 import UpdateCategoryRequest from "./models/Request/UpdateCategoryRequest";
@@ -9,7 +9,7 @@ export default class CategoryService {
   private apiUrl: string = "";
 
   constructor(apiUrl: string) {
-    this.apiUrl = apiUrl + /category/;
+    this.apiUrl = apiUrl;
   }
 
   async GetAllCategory(): Promise<BaseResponseT<GetAllCategoryResponse[]>> {
@@ -46,7 +46,7 @@ export default class CategoryService {
   async UpdateCategory(request: UpdateCategoryRequest): Promise<BaseResponse> {
     return new Promise(async (rs, rj) => {
       const res = fetch(this.apiUrl + "UpdateCategory", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json"
@@ -62,7 +62,7 @@ export default class CategoryService {
   async RemoveCategory(request: RemoveCategoryRequest): Promise<BaseResponse> {
     return new Promise(async (rs, rj) => {
       const res = fetch(this.apiUrl + "RemoveCategory", {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json"

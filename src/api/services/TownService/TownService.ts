@@ -1,15 +1,15 @@
-import BaseResponse from "../models/BaseResponse";
-import BaseResponseT from "../models/BaseResponseT";
+import BaseResponse from "../../models/BaseResponse";
+import BaseResponseT from "../../models/BaseResponseT";
 import AddTownRequest from "./models/Request/AddTownRequest";
 import RemoveTownRequest from "./models/Request/RemoveTownRequest";
 import UpdateTownRequest from "./models/Request/UpdateTownRequest";
 import GetAllTownResponse from "./models/Response/GetAllTownResponse";
 
-export default class AuthService {
+export default class TownService {
   private apiUrl: string = "";
 
   constructor(apiUrl: string) {
-    this.apiUrl = apiUrl + /town/;
+    this.apiUrl = apiUrl;
   }
 
   async GetAllTown(): Promise<BaseResponseT<GetAllTownResponse[]>> {
@@ -46,7 +46,7 @@ export default class AuthService {
   async UpdateTown(request: UpdateTownRequest): Promise<BaseResponse> {
     return new Promise(async (rs, rj) => {
       const res = fetch(this.apiUrl + "UpdateTown", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json"
@@ -62,7 +62,7 @@ export default class AuthService {
   async RemoveTown(request: RemoveTownRequest): Promise<BaseResponse> {
     return new Promise(async (rs, rj) => {
       const res = fetch(this.apiUrl + "RemoveTown", {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json"

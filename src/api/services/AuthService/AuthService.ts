@@ -1,5 +1,5 @@
-import BaseResponse from "../models/BaseResponse";
-import BaseResponseT from "../models/BaseResponseT";
+import BaseResponse from "../../models/BaseResponse";
+import BaseResponseT from "../../models/BaseResponseT";
 import SingInReqeust from "./models/Request/SingInReqeust";
 import SingInResponse from "./models/Response/SingInResponse";
 import SingUpReqeust from "./models/Request/SingUpReqeust";
@@ -12,7 +12,7 @@ export default class AuthService {
   User: SingInResponse = null;
 
   constructor(apiUrl: string) {
-    this.apiUrl = apiUrl + /auth/;
+    this.apiUrl = apiUrl;
   }
 
   async SingUpAsync(request: SingUpReqeust): Promise<BaseResponse> {
