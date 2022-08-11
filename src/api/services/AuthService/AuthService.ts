@@ -20,7 +20,7 @@ export default class AuthService {
     this.apiUrl = apiUrl;
   }
 
-  async SingUpAsync(request: SingUpReqeust): Promise<BaseResponse> {
+  async SingUp(request: SingUpReqeust): Promise<BaseResponse> {
     return new Promise(async (rs, rj) => {
       const res = fetch(this.apiUrl + "SingUp", {
         method: "POST",
@@ -36,7 +36,7 @@ export default class AuthService {
     })
   }
 
-  async SingInAsync(request: SingInReqeust): Promise<BaseResponseT<SingInResponse>> {
+  async SingIn(request: SingInReqeust): Promise<BaseResponseT<SingInResponse>> {
     return new Promise(async (rs, rj) => {
       const res = fetch(this.apiUrl + "SingIn", {
         method: "POST",

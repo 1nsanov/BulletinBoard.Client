@@ -29,7 +29,7 @@ export default class AuthPage extends Vue {
       userName: user.username,
       password: user.password,
     });
-    await this.$api.AuthService.SingUpAsync(request).then((res) => {
+    await this.$api.AuthService.SingUp(request).then((res) => {
       if (res.isSuccess) {
         this.SingIn(user);
       } else this.errMsg = res.message;
@@ -41,8 +41,7 @@ export default class AuthPage extends Vue {
       userName: user.username,
       password: user.password,
     });
-    await this.$api.AuthService.SingInAsync(request).then((res) => {
-      // this.$api.AuthService.User = res.value;
+    await this.$api.AuthService.SingIn(request).then((res) => {
       if (res.isSuccess) {
         this.$router.push({ name: "home" });
       } else this.errMsg = res.message;

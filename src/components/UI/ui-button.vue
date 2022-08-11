@@ -14,9 +14,10 @@
     :disabled="disabled"
     :style="{ opacity: disabled ? `0.5` : `1` }"
   >
-    <span>
+    <span v-if="!isLoading">
       <slot></slot>
     </span>
+    <span v-else> Загрузка... </span>
   </button>
 </template>
 
@@ -31,6 +32,7 @@ export default class UiButton extends Vue {
   @Prop({ default: "default", type: String }) color!: string;
   @Prop({ default: "small", type: String }) size!: string;
   @Prop({ default: false, type: Boolean }) disabled!: boolean;
+  @Prop({ default: false }) isLoading: boolean;
 }
 </script>
 

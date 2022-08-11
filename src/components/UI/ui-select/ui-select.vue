@@ -46,7 +46,7 @@
         >
           <div class="current_text_wrapper">
             <span class="current_text">
-              {{ innerValue ? activeText : placeholder }}
+              {{ innerValue ? innerValue.Name : placeholder }}
             </span>
           </div>
         </div>
@@ -90,7 +90,7 @@
 </template>
 <script lang="ts">
 import { Vue, Options, Prop, Watch, Ref } from "vue-property-decorator";
-import SelectOptionModel from "./models/SelectOptionModel"
+import SelectOptionModel from "./models/SelectOptionModel";
 
 @Options({
   name: "ui-select",
@@ -101,7 +101,11 @@ export default class UiSelectComponent extends Vue {
   @Prop() keyField?: string;
   @Prop() valueField?: string;
   // todo: сделать проверку на повторяющиеся значения ключей и кидать ошибку/предупреждение
-  @Prop({ default: () => new Array<SelectOptionModel>(), type: Array, required: true })
+  @Prop({
+    default: () => new Array<SelectOptionModel>(),
+    type: Array,
+    required: true,
+  })
   items!: SelectOptionModel[];
   @Prop({ default: false, type: Boolean }) autocomplete: boolean;
   @Prop({ default: false }) multiselect: boolean;
@@ -425,7 +429,7 @@ export default class UiSelectComponent extends Vue {
     this.$emit("update:modelValue", this.innerValue);
 
     let idx = this.innerItems.indexOf(item);
-    this.$emit('selectedIndex', idx)
+    this.$emit("selectedIndex", idx);
     this.setHoveredIdx(idx);
   }
 

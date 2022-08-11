@@ -3,18 +3,21 @@
     <!-- <div class="ui-input_icon" v-if="isIcon">
       <slot></slot>
     </div> -->
+    <label class="ui-input-label" v-if="label">{{ label }}<br /></label>
     <input
       class="base-input"
       :class="{
         'default-thema': thema === 'default',
         'dark-thema': thema === 'dark',
-        'isError': isError,
+        isError: isError,
+        readonly: readonly
       }"
       :type="type"
       :placeholder="`${placeholder}`"
       :value="modelValue"
       @input="updateInput"
       @keyup.enter="$emit('keyupEnter')"
+      :readonly="readonly"
     />
   </div>
 </template>
@@ -32,6 +35,8 @@ export default class UiInput extends Vue {
   @Prop({ default: "default", type: String }) thema!: string;
   // @Prop({ default: false, type: Boolean }) isIcon!: boolean;
   @Prop({ default: false }) isError: boolean;
+  @Prop({ default: null }) label: string;
+  @Prop({ default: false}) readonly: boolean;
 
   @Prop({ type: String }) modelValue!: string;
   @Emit("update:modelValue") updateInput(event: any) {
@@ -55,6 +60,11 @@ export default class UiInput extends Vue {
       height: 24px;
     }
   }
+  .ui-input-label {
+    display: flex;
+    font-size: 18px;
+    margin: 10px 0;
+  }
   .base-input {
     font-family: inherit;
     font-size: inherit;
@@ -65,6 +75,9 @@ export default class UiInput extends Vue {
     transition: 0.2s ease-in-out;
     &.isError {
       border-color: #f20f0f;
+    }
+    &.readonly{
+      border-color: #c8c8c8 !important;
     }
   }
   .base-input:focus {
