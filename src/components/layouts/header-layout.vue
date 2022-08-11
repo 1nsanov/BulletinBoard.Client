@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import { Watch } from "vue-property-decorator";
 import OptionModel from "../UI/dropdown-haeder-filter/models/OptionModel";
 
 @Options({
@@ -34,6 +35,7 @@ export default class HeaderLayout extends Vue {
     this.GetAllTown();
   }
 
+  @Watch('isAdminPage')
   async GetAllTown() {
     await this.$api.TownService.GetAllTown().then((res) => {
       if (res.isSuccess)

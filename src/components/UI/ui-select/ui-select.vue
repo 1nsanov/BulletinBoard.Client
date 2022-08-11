@@ -595,7 +595,7 @@ export default class UiSelectComponent extends Vue {
 }
 @media (max-width: 991px) {
   .ui-select {
-    width: 100% !important;
+    width: 100%;
   }
 }
 .wrong {
