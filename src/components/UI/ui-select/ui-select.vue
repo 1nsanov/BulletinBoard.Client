@@ -492,6 +492,7 @@ export default class UiSelectComponent extends Vue {
   cursor: pointer;
   outline: none;
   min-width: 11em;
+  width: 100%;
   // margin-left: 23px;
   &:focus {
     .current {
@@ -595,7 +596,7 @@ export default class UiSelectComponent extends Vue {
 }
 @media (max-width: 991px) {
   .ui-select {
-    width: 100%;
+    // width: 100%;
   }
 }
 .wrong {

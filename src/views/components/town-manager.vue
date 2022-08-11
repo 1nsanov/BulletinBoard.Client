@@ -4,7 +4,7 @@
     :items="townItems"
     v-model="valueTown"
   />
-  <ui-input label="Создание" placeholder="..." v-model="inputCreate" />
+  <ui-input label="Создание" v-model="inputCreate" />
   <ui-button
     class="btn-wrapper"
     color="green"
@@ -13,7 +13,7 @@
   >
     Создать
   </ui-button>
-  <ui-input label="Редактирование" placeholder="..." v-model="inputEdit" />
+  <ui-input label="Редактирование" v-model="inputEdit" />
   <ui-button
     class="btn-wrapper"
     color="default"

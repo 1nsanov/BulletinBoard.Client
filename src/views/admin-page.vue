@@ -15,8 +15,10 @@
         На главную
       </ui-button>
     </div>
+    <category-manager />
     <div class="home-page-content" v-if="menuOptionValue">
       <town-manager v-if="menuOptionValue.Id === 1" />
+      <!-- <category-manager v-if="menuOptionValue.Id === 2" /> -->
     </div>
   </div>
 </template>
@@ -24,11 +26,12 @@
 <script lang="ts">
 import SelectOptionModel from "@/components/UI/ui-select/models/SelectOptionModel";
 import TownManager from "@/views/components/town-manager.vue";
+import CategoryManager from "@/views/components/category-manager.vue";
 import { Options, Vue } from "vue-class-component";
 import { Watch } from "vue-property-decorator";
 @Options({
   name: "admin-page",
-  components: { TownManager },
+  components: { TownManager, CategoryManager },
 })
 export default class AdminPage extends Vue {
   menuOption: SelectOptionModel[] = [];
