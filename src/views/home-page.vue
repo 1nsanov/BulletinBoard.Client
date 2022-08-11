@@ -1,10 +1,12 @@
 <template>
   <div class="home-page">
-    {{ $api.AuthService.IsLogin }}
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-    accusantium porro officia in fugiat dolores, exercitationem pariatur, odio
-    distinctio adipisci molestiae odit nemo suscipit inventore recusandae quos
-    corrupti nam laudantium!
+    <ui-button
+      v-if="$api.AuthService.IsLogin"
+      color="green"
+      @onClick="goToAdminPanel"
+    >
+      Админ панель
+    </ui-button>
   </div>
 </template>
 
@@ -17,6 +19,10 @@ export default class HomePage extends Vue {
   created() {
     this.$api.AuthService.getUserFromCookie();
   }
+
+  goToAdminPanel() {
+    this.$router.push({ name: "admin" });
+  }
 }
 </script>
 
@@ -24,6 +30,6 @@ export default class HomePage extends Vue {
 .home-page {
   display: flex;
   flex-direction: column;
-  padding-top: 100px;
+  padding-top: 30px;
 }
 </style>

@@ -8,7 +8,7 @@
       <div class="placeholder" v-if="current">
         {{ current.Name }}
       </div>
-      <div class="placeholder" v-else>-</div>
+      <div class="placeholder" v-else>Не выбрано</div>
     </div>
     <div
       v-if="isShowMenu"

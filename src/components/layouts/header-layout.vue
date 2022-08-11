@@ -5,9 +5,11 @@
         <img src="@/assets/icons/door-enter.svg" alt="" />
       </div>
       <div class="header_main_content">
-        <dropdown-header-filter :items="towns" @select="selectTown" />
-        <dropdown-header-filter :items="categories" />
-        <dropdown-header-filter :items="subCategories" />
+        <div class="wrapper-filters" v-if="!isAdminPage">
+          <dropdown-header-filter :items="towns" @select="selectTown" />
+          <dropdown-header-filter :items="categories" />
+          <dropdown-header-filter :items="subCategories" />
+        </div>
       </div>
       <div class="header_main_auth" @click="goToAuth">
         <img src="@/assets/icons/door-enter.svg" alt="" />
@@ -17,9 +19,9 @@
 </template>
 
 <script lang="ts">
-import router from "@/router";
 import { Options, Vue } from "vue-class-component";
 import OptionModel from "../UI/dropdown-haeder-filter/models/OptionModel";
+
 @Options({
   name: "header-layout",
 })
@@ -36,8 +38,7 @@ export default class HeaderLayout extends Vue {
     await this.$api.TownService.GetAllTown().then((res) => {
       if (res.isSuccess)
         this.towns = res.value.map(
-          (x, i) =>
-            new OptionModel({ Id: x.id, Name: x.name, IsActive: i === 0 })
+          (x, i) => new OptionModel({ Id: x.id, Name: x.name, IsActive: false })
         );
     });
   }
@@ -51,8 +52,12 @@ export default class HeaderLayout extends Vue {
     this.$router.push({ name: "auth" });
   }
 
-  get isAuthorization(){
-    return this.$route.name === "auth"
+  get isAuthorization() {
+    return this.$route.name === "auth";
+  }
+
+  get isAdminPage(){
+    return this.$route.name === "admin";
   }
 }
 </script>
@@ -83,6 +88,11 @@ export default class HeaderLayout extends Vue {
       @media screen and (max-width: 994px) {
         padding: 0 15px;
         max-width: calc(994px + 15px);
+      }
+      .wrapper-filters{
+        display: flex;
+        width: 100%;
+        height: 100%;
       }
     }
     .header_main_auth {
