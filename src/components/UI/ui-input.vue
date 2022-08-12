@@ -10,7 +10,7 @@
         'default-thema': thema === 'default',
         'dark-thema': thema === 'dark',
         isError: isError,
-        readonly: readonly
+        readonly: readonly,
       }"
       :type="type"
       :placeholder="`${placeholder}`"
@@ -30,15 +30,14 @@ import { Emit, Prop } from "vue-property-decorator";
   name: "ui-input",
 })
 export default class UiInput extends Vue {
+  @Prop({ type: String }) modelValue!: string;
   @Prop({ default: "text", type: String }) type!: string;
   @Prop({ default: "", type: String }) placeholder!: string;
   @Prop({ default: "default", type: String }) thema!: string;
-  // @Prop({ default: false, type: Boolean }) isIcon!: boolean;
   @Prop({ default: false }) isError: boolean;
   @Prop({ default: null }) label: string;
-  @Prop({ default: false}) readonly: boolean;
+  @Prop({ default: false }) readonly: boolean;
 
-  @Prop({ type: String }) modelValue!: string;
   @Emit("update:modelValue") updateInput(event: any) {
     return event.target.value;
   }
@@ -76,8 +75,9 @@ export default class UiInput extends Vue {
     &.isError {
       border-color: #f20f0f;
     }
-    &.readonly{
+    &.readonly {
       border-color: #c8c8c8 !important;
+      cursor: not-allowed;
     }
   }
   .base-input:focus {

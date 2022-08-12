@@ -97,7 +97,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
-import UserFormModel from "../models/UserFormModel";
+import UserFormModel from "../../models/UserFormModel";
 @Options({
   name: "auth-user",
 })

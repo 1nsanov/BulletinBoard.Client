@@ -13,25 +13,19 @@
   </div>
   <div class="categories-label">
     <div class="categories-label-item"><ui-input label="Создание" /></div>
-    <div class="categories-label-item"><ui-input label="Создание" /></div>
+    <div class="categories-label-item">
+      <ui-input label="Создание" :readonly="!valueCategory" />
+    </div>
   </div>
 
   <div class="categories-label">
     <div class="categories-label-item df">
-      <div class="preview-image" id="output"></div>
-      <input type="file" accept="image/png, image/jpeg" name="image" />
+      <ui-preview-image :image="imgCreateCategory.SrcUrl" />
+      <ui-input-image @loadImage="loadImageCreateCategory" />
     </div>
     <div class="categories-label-item df">
-      <div
-        class="preview-image"
-        :style="{ backgroundImage: `url(${image})` }"
-      ></div>
-      <input
-        type="file"
-        accept="image/png, image/jpeg"
-        name="image"
-        @change="loadFile"
-      />
+      <ui-preview-image :image="imgCreateSubCategory.SrcUrl" />
+      <ui-input-image @loadImage="loadImageCreateSubCategory" />
     </div>
   </div>
 
@@ -97,6 +91,7 @@
 
 <script lang="ts">
 import GetAllCategoryResponse from "@/api/services/CategoryService/models/Response/GetAllCategoryResponse";
+import InputImageModel from "@/components/UI/ui-input-image/models/InputImageModel";
 import SelectOptionModel from "@/components/UI/ui-select/models/SelectOptionModel";
 import { Options, Vue } from "vue-class-component";
 import { Watch } from "vue-property-decorator";
@@ -119,7 +114,8 @@ export default class CategoryManager extends Vue {
   isLoadEdit: boolean = false;
   isLoadRemove: boolean = false;
 
-  image: string = "";
+  imgCreateCategory: InputImageModel = new InputImageModel();
+  imgCreateSubCategory: InputImageModel = new InputImageModel();
 
   @Watch("valueCategory")
   onValueTown() {
@@ -134,7 +130,7 @@ export default class CategoryManager extends Vue {
   }
 
   created() {
-    // this.GetAllCategory();
+    this.GetAllCategory();
   }
 
   async GetAllCategory() {
@@ -149,11 +145,11 @@ export default class CategoryManager extends Vue {
     });
   }
 
-  loadFile(e) {
-    var image = document.getElementById("output") as any;
-    image.src = URL.createObjectURL(e.target.files[0]);
-    this.image = image.src;
-    console.log(this.image, btoa(image.src));
+  loadImageCreateCategory(img: InputImageModel) {
+    this.imgCreateCategory = img;
+  }
+  loadImageCreateSubCategory(img: InputImageModel) {
+    this.imgCreateSubCategory = img;
   }
 
   // async CreateTown() {
@@ -234,16 +230,6 @@ export default class CategoryManager extends Vue {
   .base-button {
     width: 100% !important;
   }
-}
-.preview-image {
-  width: 100px;
-  height: 100px;
-  background: rgb(255, 255, 255);
-  border: 5px solid rgb(185, 93, 32);
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 10px;
-  margin: 10px;
 }
 .df {
   display: flex;

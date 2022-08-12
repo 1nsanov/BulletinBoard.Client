@@ -13,7 +13,7 @@
 <script lang="ts">
 import SingInReqeust from "@/api/services/AuthService/models/Request/SingInReqeust";
 import SingUpReqeust from "@/api/services/AuthService/models/Request/SingUpReqeust";
-import AuthUser from "@/components/auth-user.vue";
+import AuthUser from "@/views/components/auth-user.vue";
 import UserFormModel from "../models/UserFormModel";
 import { Options, Vue } from "vue-class-component";
 @Options({
