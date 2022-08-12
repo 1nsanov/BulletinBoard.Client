@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { Prop } from "vue-property-decorator";
+import { Prop, Watch } from "vue-property-decorator";
 
 @Options({
   name: "ui-preview-image",
@@ -23,6 +23,11 @@ import { Prop } from "vue-property-decorator";
 export default class UiPreviewImage extends Vue {
   @Prop({ default: null }) image: string;
   @Prop({ default: "100px" }) size: string;
+
+  @Watch('image')
+  dassdfsdf(){
+    console.log(this.image);
+  }
 }
 </script>
 

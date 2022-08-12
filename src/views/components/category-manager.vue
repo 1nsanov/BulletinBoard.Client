@@ -11,6 +11,7 @@
       v-model="valueSubCategory"
     />
   </div>
+  <!-- Создание начало -->
   <div class="categories-label">
     <div class="categories-label-item">
       <ui-input label="Создание" v-model="nameCreatedCategory" />
@@ -26,11 +27,11 @@
 
   <div class="categories-label">
     <div class="categories-label-item df">
-      <ui-preview-image :image="imgCreatedCategory.SrcUrl" />
+      <ui-preview-image :image="imgCreatedCategory" />
       <ui-input-image @loadImage="loadImageCreateCategory" />
     </div>
     <div class="categories-label-item df">
-      <ui-preview-image :image="imgCreatedSubCategory.SrcUrl" />
+      <ui-preview-image :image="imgCreatedSubCategory" />
       <ui-input-image
         v-if="valueCategory"
         @loadImage="loadImageCreateSubCategory"
@@ -59,10 +60,27 @@
       </ui-button>
     </div>
   </div>
+  <!-- Создание конец -->
+
+  <!-- Редактирование начало -->
+  <div class="categories-label">
+    <div class="categories-label-item">
+      <ui-input label="Редактирование" v-model="updatedCategory.Name" />
+    </div>
+    <div class="categories-label-item">
+      <ui-input label="Редактирование" v-model="updatedSubCategory.Name" />
+    </div>
+  </div>
 
   <div class="categories-label">
-    <div class="categories-label-item"><ui-input label="Редактирование" /></div>
-    <div class="categories-label-item"><ui-input label="Редактирование" /></div>
+    <div class="categories-label-item df">
+      <ui-preview-image :image="updatedCategory.Image" />
+      <ui-input-image @loadImage="loadImageUpdatedCategory" />
+    </div>
+    <div class="categories-label-item df">
+      <ui-preview-image :image="updatedSubCategory.Image" />
+      <ui-input-image @loadImage="loadImageUpdatedSubCategory" />
+    </div>
   </div>
 
   <div class="categories-label">
@@ -73,6 +91,7 @@
       <ui-button>Редактировать</ui-button>
     </div>
   </div>
+  <!-- Редактирование конец -->
 
   <div class="categories-label">
     <div class="categories-label-item">
@@ -87,8 +106,8 @@
 <script lang="ts">
 import BaseResponse from "@/api/models/BaseResponse";
 import GetAllCategoryResponse from "@/api/services/CategoryService/models/Response/GetAllCategoryResponse";
-import InputImageModel from "@/components/UI/ui-input-image/models/InputImageModel";
 import SelectOptionModel from "@/components/UI/ui-select/models/SelectOptionModel";
+import SelectedCategoryModel from "@/models/SelectedCategoryModel";
 import { Options, Vue } from "vue-class-component";
 import { Watch } from "vue-property-decorator";
 @Options({
@@ -101,26 +120,50 @@ export default class CategoryManager extends Vue {
   subCategoryItems: SelectOptionModel[] = [];
   valueSubCategory: SelectOptionModel = null;
 
-  imgCreatedCategory: InputImageModel = new InputImageModel();
-  nameCreatedCategory: string = "";
+  currentItem: GetAllCategoryResponse = null;
 
-  imgCreatedSubCategory: InputImageModel = new InputImageModel();
+  nameCreatedCategory: string = "";
+  imgCreatedCategory: string = null;
+
   nameCreatedSubCategory: string = "";
+  imgCreatedSubCategory: string = null;
+
+  updatedCategory: SelectedCategoryModel = new SelectedCategoryModel();
+  updatedSubCategory: SelectedCategoryModel = new SelectedCategoryModel();
 
   isLoadCreateCategory: boolean = false;
   isLoadCreateSubCategory: boolean = false;
   isLoadEdit: boolean = false;
   isLoadRemove: boolean = false;
 
-  @Watch("valueCategory")
+  @Watch("valueCategory", { deep: true })
   onValueTown() {
     if (!this.valueCategory) return;
-    let items = this.categoriesData.find((x) => x.id === this.valueCategory.Id);
-    console.log(items);
-    if (items && items.subCategories) {
-      this.subCategoryItems = items.subCategories.map((x, i) => {
+    this.currentItem = this.categoriesData.find(
+      (x) => x.id === this.valueCategory.Id
+    );
+    console.log(this.currentItem);
+
+    if (this.currentItem && this.currentItem.subCategories) {
+      this.subCategoryItems = this.currentItem.subCategories.map((x, i) => {
         return new SelectOptionModel(x.id, x.name);
       });
+    }
+
+    this.updatedCategory = new SelectedCategoryModel({
+      Id: this.currentItem.id,
+      Name: this.currentItem.name,
+      Image: this.currentItem.imageUrl,
+    });
+  }
+
+  @Watch("valueSubCategory", { deep: true })
+  onValueSubCategory() {
+    if (!this.currentItem) return;
+    var currentSubItem = this.currentItem.subCategories.find(
+      (x) => x.id === this.valueSubCategory.Id
+    );
+    if (currentSubItem) {
     }
   }
 
@@ -147,13 +190,13 @@ export default class CategoryManager extends Vue {
     }
     this.isLoadCreateCategory = true;
     await this.$api.CategoryService.CreateCategory({
-      name: this.nameCreatedCategory,
-      imageUrl: this.imgCreatedCategory.Base64,
+      Name: this.nameCreatedCategory,
+      ImageUrl: this.imgCreatedCategory,
     }).then((res) => {
       this.checkedSuccess(res, "Категория успешно добавлена");
     });
     this.isLoadCreateCategory = false;
-    this.imgCreatedCategory = new InputImageModel();
+    this.imgCreatedCategory = null;
     this.nameCreatedCategory = "";
   }
 
@@ -164,25 +207,32 @@ export default class CategoryManager extends Vue {
     }
     this.isLoadCreateSubCategory = true;
     await this.$api.CategoryService.CreateCategory({
-      name: this.nameCreatedSubCategory,
-      imageUrl: this.imgCreatedSubCategory.Base64,
-      parentId: this.valueCategory.Id,
+      Name: this.nameCreatedSubCategory,
+      ImageUrl: this.imgCreatedSubCategory,
+      ParentId: this.valueCategory.Id,
     }).then((res) => {
       this.checkedSuccess(res, "Подкатегория успешно добавлена");
     });
     this.isLoadCreateSubCategory = false;
-    this.imgCreatedSubCategory = new InputImageModel();
+    this.imgCreatedSubCategory = null;
     this.nameCreatedSubCategory = "";
   }
 
-  loadImageCreateCategory(img: InputImageModel) {
+  loadImageCreateCategory(img: any) {
     this.imgCreatedCategory = img;
   }
-  loadImageCreateSubCategory(img: InputImageModel) {
+  loadImageCreateSubCategory(img: string) {
     this.imgCreatedSubCategory = img;
+  }
+  loadImageUpdatedCategory(img: string) {
+    this.updatedCategory.Image = img;
+  }
+  loadImageUpdatedSubCategory(img: string) {
+    this.updatedSubCategory.Image = img;
   }
 
   checkedSuccess(res: BaseResponse, msg: string) {
+    console.log(res);
     if (res.isSuccess) {
       alert(msg);
       this.GetAllCategory();
@@ -190,70 +240,6 @@ export default class CategoryManager extends Vue {
       alert(res.message);
     }
   }
-
-  // async CreateTown() {
-  //   if (this.inputCreate.length === 0) {
-  //     alert("Пустое поле ввода нового города");
-  //     return;
-  //   }
-  //   this.isLoadCreate = true;
-  //   await this.$api.TownService.AddTown({ name: this.inputCreate }).then(
-  //     (res) => {
-  //       if (res.isSuccess) {
-  //         this.GetAllTown();
-  //         alert("Город успешно добавлен.");
-  //       } else alert(res.message);
-  //     }
-  //   );
-  //   this.isLoadCreate = false;
-  //   this.inputCreate = "";
-  // }
-
-  // async UpdateTown() {
-  //   if (this.inputEdit.length === 0 || !this.valueTown) {
-  //     alert("Пустое поле ввода редактирования");
-  //     this.onValueTown();
-  //     return;
-  //   }
-
-  //   this.isLoadEdit = true;
-  //   await this.$api.TownService.UpdateTown({
-  //     id: this.valueTown.Id,
-  //     name: this.inputEdit,
-  //   }).then((res) => {
-  //     if (res.isSuccess) {
-  //       this.GetAllTown();
-  //       alert("Город успешно обновлен.");
-  //     } else {
-  //       alert(res.message);
-  //       this.onValueTown();
-  //     }
-  //   });
-  //   this.isLoadEdit = false;
-
-  //   this.inputEdit = "";
-  // }
-
-  // async RemoveTown() {
-  //   if (!this.valueTown) {
-  //     alert("Город не выбран");
-  //     return;
-  //   }
-
-  //   this.isLoadRemove = true;
-  //   await this.$api.TownService.RemoveTown({ id: this.valueTown.Id }).then(
-  //     (res) => {
-  //       if (res.isSuccess) {
-  //         this.GetAllTown();
-  //         alert("Город успешно удален.");
-  //       } else {
-  //         alert(res.message);
-  //         this.onValueTown();
-  //       }
-  //     }
-  //   );
-  //   this.isLoadRemove = false;
-  // }
 }
 </script>
 

@@ -1,5 +1,5 @@
 export default class CreateCategoryRequest{
-  name: string = null;
-  imageUrl?: string = null;
-  parentId?: number = null;
+  Name: string = null;
+  ImageUrl?: string = null;
+  ParentId?: number = null;
 }

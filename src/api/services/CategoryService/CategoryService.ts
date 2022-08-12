@@ -37,7 +37,7 @@ export default class CategoryService {
         },
         body: JSON.stringify(request)
       })
-
+      
       var result = await this.objectFromJSON(res) as BaseResponse;
       rs(result);
     })
@@ -75,7 +75,7 @@ export default class CategoryService {
     })
   }
 
-  
+
 
   async objectFromJSON(response: Promise<Response>): Promise<any> {
     var result = undefined;
