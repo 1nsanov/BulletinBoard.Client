@@ -3,7 +3,6 @@
     <input
       type="file"
       accept="image/png, image/jpeg"
-      name="image"
       @change="loadFile"
     />
   </div>

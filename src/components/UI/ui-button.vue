@@ -10,8 +10,9 @@
       'small-size': size === 'small',
       'medium-size': size === 'medium',
       'big-size': size === 'big',
+      isLoading: isLoading,
     }"
-    :disabled="disabled"
+    :disabled="disabled || isLoading"
     :style="{ opacity: disabled ? `0.5` : `1` }"
   >
     <span v-if="!isLoading">
@@ -52,9 +53,15 @@ export default class UiButton extends Vue {
   letter-spacing: inherit;
   color: #fff;
   font-weight: 700;
+  &.isLoading {
+    cursor: default;
+  }
 }
 .base-button:hover {
   filter: contrast(2.2);
+  &.isLoading {
+    filter: none;
+  }
 }
 //themas
 .default-thema-btn {

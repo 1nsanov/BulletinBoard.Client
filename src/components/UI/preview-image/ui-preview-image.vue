@@ -2,9 +2,13 @@
   <div class="ui-preview-image">
     <div
       class="preview-image"
-      :style="{ backgroundImage: `url(${image})`, width: size, height: size }"
+      :style="{
+        backgroundImage: image ? `url(${image})` : none,
+        width: size,
+        height: size,
+      }"
     >
-      <img v-if="!image" src="./image/undefined-image.svg" alt="">
+      <img v-if="!image" src="./image/undefined-image.svg" alt="" />
     </div>
   </div>
 </template>
@@ -32,7 +36,7 @@ export default class UiPreviewImage extends Vue {
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 10px;
-  img{
+  img {
     width: 70%;
   }
 }

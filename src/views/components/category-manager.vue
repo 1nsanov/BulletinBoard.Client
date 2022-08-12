@@ -8,33 +8,55 @@
     <ui-select
       :placeholder="subCategoryItems.length > 0 ? 'Выбрать категорию' : '-'"
       :items="subCategoryItems"
-      v-model="subValueCategory"
+      v-model="valueSubCategory"
     />
   </div>
   <div class="categories-label">
-    <div class="categories-label-item"><ui-input label="Создание" /></div>
     <div class="categories-label-item">
-      <ui-input label="Создание" :readonly="!valueCategory" />
+      <ui-input label="Создание" v-model="nameCreatedCategory" />
+    </div>
+    <div class="categories-label-item">
+      <ui-input
+        label="Создание"
+        v-model="nameCreatedSubCategory"
+        :readonly="!valueCategory"
+      />
     </div>
   </div>
 
   <div class="categories-label">
     <div class="categories-label-item df">
-      <ui-preview-image :image="imgCreateCategory.SrcUrl" />
+      <ui-preview-image :image="imgCreatedCategory.SrcUrl" />
       <ui-input-image @loadImage="loadImageCreateCategory" />
     </div>
     <div class="categories-label-item df">
-      <ui-preview-image :image="imgCreateSubCategory.SrcUrl" />
-      <ui-input-image @loadImage="loadImageCreateSubCategory" />
+      <ui-preview-image :image="imgCreatedSubCategory.SrcUrl" />
+      <ui-input-image
+        v-if="valueCategory"
+        @loadImage="loadImageCreateSubCategory"
+      />
     </div>
   </div>
 
   <div class="categories-label">
     <div class="categories-label-item">
-      <ui-button color="green">Создать</ui-button>
+      <ui-button
+        color="green"
+        @onClick="CreateCategory"
+        :isLoading="isLoadCreateCategory"
+      >
+        Создать
+      </ui-button>
     </div>
     <div class="categories-label-item">
-      <ui-button color="green">Создать</ui-button>
+      <ui-button
+        color="green"
+        @onClick="CreateSubCategory"
+        :isLoading="isLoadCreateSubCategory"
+        :disabled="!valueCategory"
+      >
+        Создать
+      </ui-button>
     </div>
   </div>
 
@@ -60,36 +82,10 @@
       <ui-button color="red">Удалить</ui-button>
     </div>
   </div>
-
-  <!-- <ui-input label="Создание" placeholder="..." v-model="inputCreate" />
-  <ui-button
-    class="btn-wrapper"
-    color="green"
-    :isLoading="isLoadCreate"
-    @onClick="CreateTown"
-  >
-    Создать
-  </ui-button>
-  <ui-input label="Редактирование" placeholder="..." v-model="inputEdit" />
-  <ui-button
-    class="btn-wrapper"
-    color="default"
-    :isLoading="isLoadEdit"
-    @onClick="UpdateTown"
-  >
-    Редактировать
-  </ui-button>
-  <ui-button
-    class="btn-wrapper"
-    color="red"
-    :isLoading="isLoadRemove"
-    @onClick="RemoveTown"
-  >
-    Удалить
-  </ui-button> -->
 </template>
 
 <script lang="ts">
+import BaseResponse from "@/api/models/BaseResponse";
 import GetAllCategoryResponse from "@/api/services/CategoryService/models/Response/GetAllCategoryResponse";
 import InputImageModel from "@/components/UI/ui-input-image/models/InputImageModel";
 import SelectOptionModel from "@/components/UI/ui-select/models/SelectOptionModel";
@@ -100,22 +96,21 @@ import { Watch } from "vue-property-decorator";
 })
 export default class CategoryManager extends Vue {
   categoriesData: GetAllCategoryResponse[] = [];
-
   categoryItems: SelectOptionModel[] = [];
   valueCategory: SelectOptionModel = null;
-
   subCategoryItems: SelectOptionModel[] = [];
-  subValueCategory: SelectOptionModel = null;
+  valueSubCategory: SelectOptionModel = null;
 
-  inputCreate: string = "";
-  inputEdit: string = "";
+  imgCreatedCategory: InputImageModel = new InputImageModel();
+  nameCreatedCategory: string = "";
 
-  isLoadCreate: boolean = false;
+  imgCreatedSubCategory: InputImageModel = new InputImageModel();
+  nameCreatedSubCategory: string = "";
+
+  isLoadCreateCategory: boolean = false;
+  isLoadCreateSubCategory: boolean = false;
   isLoadEdit: boolean = false;
   isLoadRemove: boolean = false;
-
-  imgCreateCategory: InputImageModel = new InputImageModel();
-  imgCreateSubCategory: InputImageModel = new InputImageModel();
 
   @Watch("valueCategory")
   onValueTown() {
@@ -145,11 +140,55 @@ export default class CategoryManager extends Vue {
     });
   }
 
+  async CreateCategory() {
+    if (this.nameCreatedCategory.length === 0) {
+      alert("Пустое поле ввода новой категории");
+      return;
+    }
+    this.isLoadCreateCategory = true;
+    await this.$api.CategoryService.CreateCategory({
+      name: this.nameCreatedCategory,
+      imageUrl: this.imgCreatedCategory.Base64,
+    }).then((res) => {
+      this.checkedSuccess(res, "Категория успешно добавлена");
+    });
+    this.isLoadCreateCategory = false;
+    this.imgCreatedCategory = new InputImageModel();
+    this.nameCreatedCategory = "";
+  }
+
+  async CreateSubCategory() {
+    if (this.nameCreatedSubCategory.length === 0) {
+      alert("Пустое поле ввода новой подкатегории");
+      return;
+    }
+    this.isLoadCreateSubCategory = true;
+    await this.$api.CategoryService.CreateCategory({
+      name: this.nameCreatedSubCategory,
+      imageUrl: this.imgCreatedSubCategory.Base64,
+      parentId: this.valueCategory.Id,
+    }).then((res) => {
+      this.checkedSuccess(res, "Подкатегория успешно добавлена");
+    });
+    this.isLoadCreateSubCategory = false;
+    this.imgCreatedSubCategory = new InputImageModel();
+    this.nameCreatedSubCategory = "";
+  }
+
   loadImageCreateCategory(img: InputImageModel) {
-    this.imgCreateCategory = img;
+    this.imgCreatedCategory = img;
   }
   loadImageCreateSubCategory(img: InputImageModel) {
-    this.imgCreateSubCategory = img;
+    this.imgCreatedSubCategory = img;
+  }
+
+  checkedSuccess(res: BaseResponse, msg: string) {
+    if (res.isSuccess) {
+      alert(msg);
+      this.GetAllCategory();
+    } else {
+      alert(res.message);
+    }
   }
 
   // async CreateTown() {
