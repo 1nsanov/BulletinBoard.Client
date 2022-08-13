@@ -26,6 +26,23 @@ const routes: Array<RouteRecordRaw> = [
         name: 'admin',
         path: '/admin',
         component: AdminPage,
+        children: [
+          {
+            name: 'town',
+            path: 'town',
+            component: AdminPage,
+          },
+          {
+            name: 'category',
+            path: 'category',
+            component: AdminPage,
+          },
+          {
+            name: 'advertisement',
+            path: 'advertisement',
+            component: AdminPage,
+          },
+        ]
       },
       {
         name: 'advertisement-update',

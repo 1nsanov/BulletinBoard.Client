@@ -54,7 +54,20 @@ export default class AdminPage extends Vue {
   advertisementList: AdvertisementListItemModel[] = [];
 
   @Watch("menuOptionValue")
-  onMenuOptionValue() {}
+  onMenuOptionValue() {
+    if (!this.menuOptionValue) return;
+    switch (this.menuOptionValue.Id) {
+      case 1:
+       this.$router.push({ name: "town" });
+        break;
+      case 2:
+        this.$router.push({ name: "category" });
+        break;
+      case 3:
+        this.$router.push({ name: "advertisement" });
+        break;
+    }
+  }
 
   created() {
     this.init();
