@@ -2,12 +2,12 @@ export default class AdvertisementModel{
   title: string = null;
   description: string = null;
   phoneNumber: string = null;
-  price: number = 0;
+  price: number = null;
   imageUrl?: string = null;
-  userId: number = 0;
-  categoryId: number = 0;
-  subCategoryId?: number = 0;
-  townId: number = 0;
+  userId: number = null;
+  categoryId: number = null;
+  subCategoryId?: number = null;
+  townId: number = null;
 
   constructor(obj?: Partial<AdvertisementModel>) {
     if (obj) Object.assign(this, obj)

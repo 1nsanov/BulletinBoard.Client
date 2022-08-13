@@ -22,7 +22,9 @@ import { Options, Vue } from "vue-class-component";
 })
 export default class HomePage extends Vue {
   created() {
-    this.$api.AuthService.getUserFromCookie();
+    this.$api.AdvertisementService.GetAdvertisementList().then((res) => {
+      console.log(res);
+    });
   }
 
   goToAdminPanel() {

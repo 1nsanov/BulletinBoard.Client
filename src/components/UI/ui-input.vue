@@ -17,6 +17,7 @@
       :value="modelValue"
       @input="updateInput"
       @keyup.enter="$emit('keyupEnter')"
+      @focus="$emit('focus')"
       :readonly="readonly"
     />
   </div>

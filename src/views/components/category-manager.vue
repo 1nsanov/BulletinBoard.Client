@@ -6,7 +6,7 @@
       v-model="valueCategory"
     />
     <ui-select
-      :placeholder="subCategoryItems.length > 0 ? 'Выбрать категорию' : '-'"
+      :placeholder="subCategoryItems.length > 0 ? 'Выбрать подкатегорию' : '-'"
       :items="subCategoryItems"
       v-model="valueSubCategory"
     />
@@ -173,12 +173,11 @@ export default class CategoryManager extends Vue {
   isLoadRemovedSubCategory: boolean = false;
 
   @Watch("valueCategory", { deep: true })
-  onValueTown() {
+  onValueCategory() {
     if (!this.valueCategory) return;
     this.currentItem = this.categoriesData.find(
       (x) => x.id === this.valueCategory.Id
     );
-    console.log(this.currentItem);
 
     this.setSubCategoryItem();
 

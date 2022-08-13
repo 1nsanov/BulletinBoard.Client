@@ -1,8 +1,8 @@
 export default class SelectOptionModel {
-  Id: number = 0;
+  Id: number = null;
   Name: string = null;
 
-  constructor(id: number, name: string) {
+  constructor(id?: number, name?: string) {
     this.Id = id;
     this.Name = name;
   }

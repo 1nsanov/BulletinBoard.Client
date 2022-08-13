@@ -14,7 +14,7 @@ export default class AdvertisementService {
     this.apiUrl = apiUrl;
   }
 
-  async GetAdvertisementList(request: GetAdvertisementListRequest): Promise<BaseResponseT<AdvertisementListItemModel[]>> {
+  async GetAdvertisementList(request?: GetAdvertisementListRequest): Promise<BaseResponseT<AdvertisementListItemModel[]>> {
     return new Promise(async (rs, rj) => {
       const res = fetch(this.apiUrl + "GetAdvertisementList", {
         method: "POST",

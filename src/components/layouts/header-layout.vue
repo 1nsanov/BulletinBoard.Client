@@ -45,6 +45,7 @@ export default class HeaderLayout extends Vue {
 
   @Watch("isAdminPage")
   getAllData() {
+    if(!this.isHomePage) return;
     this.GetAllTown();
     this.GetAllCategory();
   }
