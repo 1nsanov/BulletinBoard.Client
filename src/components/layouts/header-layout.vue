@@ -5,7 +5,7 @@
         <img src="@/assets/icons/icon-home.svg" alt="" />
       </div>
       <div class="header_main_content">
-        <div class="wrapper-filters" v-if="isHomePage">
+        <div class="wrapper-filters" v-if="isAdvertisement">
           <dropdown-header-filter :items="towns" @select="selectTown" />
           <dropdown-header-filter
             :items="categories"
@@ -23,7 +23,7 @@
           alt=""
           v-if="!$api.AuthService.IsLogin"
         />
-        <img src="@/assets/icons/door-exit.svg" alt="" v-else />
+        <img src="@/assets/icons/person-circle.svg" alt="" v-else />
       </div>
     </div>
   </div>
@@ -114,8 +114,10 @@ export default class HeaderLayout extends Vue {
   }
 
   goToAuth() {
-    this.$api.AuthService.removeUserFromCookie();
-    this.$router.push({ name: "auth" });
+    if (!this.$api.AuthService.IsLogin) {
+      this.$router.push({ name: "auth" });
+    }
+    // this.$api.AuthService.removeUserFromCookie();
   }
 
   goToHome() {
@@ -132,6 +134,10 @@ export default class HeaderLayout extends Vue {
 
   get isHomePage() {
     return this.$route.name === "home";
+  }
+
+  get isAdvertisement() {
+    return this.$route.name === "advertisement" || this.isHomePage;
   }
 }
 </script>

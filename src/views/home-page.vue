@@ -13,71 +13,20 @@
       </div>
     </div>
     <div class="home-page_advertisement">
-      <advertisement-list>
-        <advertisement-item
-          v-for="item in advertisementList"
-          :key="item.id"
-          :item="item"
-        />
-      </advertisement-list>
+      <advertisements/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import AdvertisementList from "./components/advertisement-list/advertisement-list.vue";
-import AdvertisementItem from "./components/advertisement-list/advertisement-item.vue";
-import AdvertisementListItemModel from "@/api/services/AdvertisementService/models/AdvertisementListItemModel";
-import FilterAdvertisementModel from "../models/FilterAdvertisementModel";
-import { Watch } from "vue-property-decorator";
+import Advertisements from "./components/advertisement-list/advertisements.vue";
 
 @Options({
   name: "home-page",
-  components: { AdvertisementList, AdvertisementItem },
+  components: { Advertisements },
 })
 export default class HomePage extends Vue {
-  advertisementList: AdvertisementListItemModel[] = [];
-
-  filter: FilterAdvertisementModel = new FilterAdvertisementModel();
-
-  @Watch("$store.state.townFilterId")
-  onTownFilter() {
-    console.log("onTownFilter");
-    this.filter.TownId = this.$store.state.townFilterId;
-    this.getAdvertisementList();
-  }
-
-  @Watch("$store.state.categoryFilterId")
-  onCategoryilter() {
-    console.log("onCategoryilter");
-    this.filter.CategoryId = this.$store.state.categoryFilterId;
-    this.getAdvertisementList();
-  }
-
-  @Watch("$store.state.subCategoryFilterId")
-  onsubCategoryFilterId() {
-    console.log("onsubCategoryFilterId");
-    this.filter.SubCategory = this.$store.state.subCategoryFilterId;
-    this.getAdvertisementList();
-  }
-
-  created() {
-    this.getAdvertisementList();
-  }
-
-  getAdvertisementList() {
-    this.$api.AdvertisementService.GetAdvertisementList({
-      TownId: this.filter.TownId,
-      CategoryId: this.filter.CategoryId,
-      SubCategoryId: this.filter.SubCategory,
-    }).then((res) => {
-      if (res.isSuccess) {
-        this.advertisementList = res.value;
-      }
-    });
-  }
-
   goToAdminPanel() {
     this.$router.push({ name: "admin" });
   }
