@@ -14,6 +14,9 @@
       <div class="placeholder" v-else>
         {{ items.length === 0 ? "-" : "Не выбрано" }}
       </div>
+      <div class="close-button" v-if="current" @click.stop="reset">
+        <img src="@/assets/icons/icon-cross.svg" alt="" />
+      </div>
     </div>
     <div
       v-if="isShowMenu"
@@ -80,6 +83,10 @@ export default class DropdownHeaderFilter extends Vue {
     this.isShowMenu = false;
     this.$emit("select", item);
   }
+  reset() {
+    this.current = null;
+    this.$emit("select", null);
+  }
 }
 </script>
 
@@ -104,18 +111,39 @@ export default class DropdownHeaderFilter extends Vue {
     .placeholder {
       word-break: break-all;
     }
-  }
-  .active-placeholder,
-  .placeholder-container:hover {
-    background: rgb(55, 163, 240);
-  }
-  .hover-disabled:hover {
-    cursor: not-allowed;
-    &:hover {
-      background: rgb(46, 139, 205);
+    .close-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+      top: 7px;
+      right: 7px;
+      transition: 0.5s ease-in-out;
+      img {
+        width: 10px;
+      }
+      &:hover {
+        background: rgb(231, 231, 231);
+        transform: rotateZ(180deg);
+      }
     }
-    &.active-placeholder {
-      background: rgb(46, 139, 205);
+    .active-placeholder,
+    .placeholder-container:hover {
+      background: rgb(55, 163, 240);
+    }
+    .hover-disabled:hover {
+      cursor: not-allowed;
+      &:hover {
+        background: rgb(46, 139, 205);
+      }
+      &.active-placeholder {
+        background: rgb(46, 139, 205);
+      }
     }
   }
 

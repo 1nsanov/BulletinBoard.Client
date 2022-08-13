@@ -2,7 +2,7 @@
   <div class="header">
     <div class="header_main _container" v-if="!isAuthorization">
       <div class="header_main_auth" @click="goToHome"> 
-        <img src="@/assets/icons/door-enter.svg" alt="" />
+        <img src="@/assets/icons/icon-home.svg" alt="" />
       </div>
       <div class="header_main_content">
         <div class="wrapper-filters" v-if="isHomePage">
@@ -18,7 +18,8 @@
         </div>
       </div>
       <div class="header_main_auth" @click="goToAuth">
-        <img src="@/assets/icons/door-enter.svg" alt="" />
+        <img src="@/assets/icons/door-enter.svg" alt="" v-if="!$api.AuthService.IsLogin" />
+        <img src="@/assets/icons/door-exit.svg" alt="" v-else />
       </div>
     </div>
   </div>
