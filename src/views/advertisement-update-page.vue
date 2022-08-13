@@ -95,7 +95,7 @@ export default class AdvertisementUpdatePage extends Vue {
   @Watch("valueSubCategory", { deep: true })
   onValueSubCategory() {
     console.log(this.valueSubCategory);
-    this.advertisement.categoryId = this.valueSubCategory
+    this.advertisement.subCategoryId = this.valueSubCategory
       ? this.valueSubCategory.Id
       : null;
     console.log(this.advertisement.categoryId);
