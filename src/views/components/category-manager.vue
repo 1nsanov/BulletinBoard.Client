@@ -71,7 +71,7 @@
       <ui-input
         label="Редактирование"
         v-model="updatedSubCategory.Name"
-        :readonly="updatedSubCategory.Id == 0"
+        :readonly="!valueSubCategory"
       />
     </div>
   </div>
@@ -79,39 +79,62 @@
   <div class="categories-label">
     <div class="categories-label-item df">
       <ui-preview-image :image="updatedCategory.Image" />
-      <ui-input-image @loadImage="loadImageUpdatedCategory" />
+      <ui-input-image
+        @loadImage="loadImageUpdatedCategory"
+        v-if="valueCategory"
+      />
     </div>
     <div class="categories-label-item df">
       <ui-preview-image :image="updatedSubCategory.Image" />
       <ui-input-image
         @loadImage="loadImageUpdatedSubCategory"
-        v-if="updatedSubCategory.Id != 0"
+        v-if="valueSubCategory"
       />
     </div>
   </div>
 
   <div class="categories-label">
     <div class="categories-label-item">
-      <ui-button @onClick="UpdateCategory">Редактировать</ui-button>
+      <ui-button
+        @onClick="UpdateCategory"
+        :isLoading="isLoadUpdatedCategory"
+        :disabled="!valueCategory"
+        >Редактировать</ui-button
+      >
     </div>
     <div class="categories-label-item">
       <ui-button
         @onClick="UpdateSubCategory"
-        :disabled="updatedSubCategory.Id == 0"
+        :isLoading="isLoadUpdatedSubCategory"
+        :disabled="!valueSubCategory"
         >Редактировать</ui-button
       >
     </div>
   </div>
   <!-- Редактирование конец -->
 
+  <!-- Удаление начало -->
   <div class="categories-label">
     <div class="categories-label-item">
-      <ui-button color="red">Удалить</ui-button>
+      <ui-button
+        color="red"
+        :disabled="!valueCategory"
+        :isLoading="isLoadRemovedCategory"
+        @onClick="RemoveCategory"
+        >Удалить</ui-button
+      >
     </div>
     <div class="categories-label-item">
-      <ui-button color="red">Удалить</ui-button>
+      <ui-button
+        color="red"
+        :disabled="!valueSubCategory"
+        :isLoading="isLoadRemovedSubCategory"
+        @onClick="RemoveSubCategory"
+        >Удалить</ui-button
+      >
     </div>
   </div>
+  <!-- Удаление конец -->
 </template>
 
 <script lang="ts">
@@ -259,7 +282,6 @@ export default class CategoryManager extends Vue {
       this.checkedSuccess(res, "Категория успешно обновлена");
     });
     this.isLoadUpdatedCategory = false;
-    this.updatedCategory = new SelectedCategoryModel();
   }
 
   async UpdateSubCategory() {
@@ -277,9 +299,28 @@ export default class CategoryManager extends Vue {
       this.checkedSuccess(res, "Подкатегория успешно обновлена");
     });
     this.isLoadUpdatedSubCategory = false;
-    this.updatedSubCategory = new SelectedCategoryModel();
     this.valueSubCategory = null;
-    this.subCategoryItems = [];
+  }
+
+  async RemoveCategory() {
+    this.isLoadRemovedCategory = true;
+    await this.$api.CategoryService.RemoveCategory({
+      id: this.updatedCategory.Id,
+    }).then((res) => {
+      this.checkedSuccess(res, "Категория успешно удалена");
+    });
+    this.isLoadRemovedCategory = false;
+  }
+
+  async RemoveSubCategory() {
+    this.isLoadRemovedSubCategory = true;
+    await this.$api.CategoryService.RemoveCategory({
+      id: this.updatedSubCategory.Id,
+      parentId: this.updatedCategory.Id,
+    }).then((res) => {
+      this.checkedSuccess(res, "Подкатегория успешно удалена");
+    });
+    this.isLoadRemovedSubCategory = false;
   }
 
   loadImageCreateCategory(img: any) {
@@ -300,6 +341,9 @@ export default class CategoryManager extends Vue {
     if (res.isSuccess) {
       alert(msg);
       this.GetAllCategory();
+      this.updatedCategory = new SelectedCategoryModel();
+      this.updatedSubCategory  = new SelectedCategoryModel();
+      this.subCategoryItems = [];
     } else {
       alert(res.message);
     }
