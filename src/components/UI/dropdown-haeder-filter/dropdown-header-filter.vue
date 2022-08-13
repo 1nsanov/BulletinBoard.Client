@@ -85,6 +85,9 @@ export default class DropdownHeaderFilter extends Vue {
   }
   reset() {
     this.current = null;
+    this.innerItems.forEach((x) => {
+      x.IsActive = false;
+    });
     this.$emit("select", null);
   }
 }

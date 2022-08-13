@@ -2,7 +2,7 @@ import { App } from 'vue'
 import UiButton from './ui-button.vue'
 import UiInput from './ui-input.vue'
 import UiPreload from "./ui-preload.vue"
-import DropdownHeaderFilter from "./dropdown-haeder-filter/dropdown-haeder-filter.vue"
+import DropdownHeaderFilter from "./dropdown-haeder-filter/dropdown-header-filter.vue"
 import UiSelect from "./ui-select/ui-select.vue"
 import UiPreviewImage from "./preview-image/ui-preview-image.vue"
 import UiInputImage from "./ui-input-image/ui-input-image.vue"

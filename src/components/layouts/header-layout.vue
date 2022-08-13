@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="header_main _container" v-if="!isAuthorization">
-      <div class="header_main_auth" @click="goToHome"> 
+      <div class="header_main_auth" @click="goToHome">
         <img src="@/assets/icons/icon-home.svg" alt="" />
       </div>
       <div class="header_main_content">
@@ -18,7 +18,11 @@
         </div>
       </div>
       <div class="header_main_auth" @click="goToAuth">
-        <img src="@/assets/icons/door-enter.svg" alt="" v-if="!$api.AuthService.IsLogin" />
+        <img
+          src="@/assets/icons/door-enter.svg"
+          alt=""
+          v-if="!$api.AuthService.IsLogin"
+        />
         <img src="@/assets/icons/door-exit.svg" alt="" v-else />
       </div>
     </div>
@@ -46,7 +50,7 @@ export default class HeaderLayout extends Vue {
 
   @Watch("isAdminPage")
   getAllData() {
-    if(!this.isHomePage) return;
+    if (!this.isHomePage) return;
     this.GetAllTown();
     this.GetAllCategory();
   }
@@ -54,7 +58,6 @@ export default class HeaderLayout extends Vue {
   @Watch("selectedCategory", { deep: true })
   onSelectedCategory() {
     if (!this.selectedCategory) return;
-
     var category = this.categoriesData.find(
       (x) => x.id === this.selectedCategory.Id
     );
@@ -63,6 +66,8 @@ export default class HeaderLayout extends Vue {
         (x) => new OptionModel({ Id: x.id, Name: x.name, IsActive: false })
       );
     }
+
+    this.$store.state.subCategoryFilterId = null;
   }
 
   created() {
@@ -91,12 +96,21 @@ export default class HeaderLayout extends Vue {
 
   selectTown(item: OptionModel) {
     this.selectedTown = item;
+    this.$store.state.townFilterId = this.selectedTown
+      ? this.selectedTown.Id
+      : null;
   }
   selectCategory(item: OptionModel) {
     this.selectedCategory = item;
+    this.$store.state.categoryFilterId = this.selectedCategory
+      ? this.selectedCategory.Id
+      : null;
   }
   selectSubCategory(item: OptionModel) {
     this.selectedSubCategory = item;
+    this.$store.state.subCategoryFilterId = this.selectedSubCategory
+      ? this.selectedSubCategory.Id
+      : null;
   }
 
   goToAuth() {
@@ -104,7 +118,7 @@ export default class HeaderLayout extends Vue {
     this.$router.push({ name: "auth" });
   }
 
-  goToHome(){
+  goToHome() {
     this.$router.push({ name: "home" });
   }
 
@@ -116,7 +130,7 @@ export default class HeaderLayout extends Vue {
     return this.$route.name === "admin";
   }
 
-  get isHomePage(){
+  get isHomePage() {
     return this.$route.name === "home";
   }
 }
