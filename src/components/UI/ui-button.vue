@@ -11,6 +11,7 @@
       'medium-size': size === 'medium',
       'big-size': size === 'big',
       isLoading: isLoading,
+      disabled: disabled,
     }"
     :disabled="disabled || isLoading"
     :style="{ opacity: disabled ? `0.5` : `1` }"
@@ -60,6 +61,10 @@ export default class UiButton extends Vue {
 .base-button:hover {
   filter: contrast(2.2);
   &.isLoading {
+    filter: none;
+  }
+  &.disabled{
+    cursor: default;
     filter: none;
   }
 }

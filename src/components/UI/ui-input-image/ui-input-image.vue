@@ -16,7 +16,6 @@ export default class UiInputImage extends Vue {
     var reader = new FileReader();
     var self = this;
     reader.onloadend = function () {
-      console.log(reader.result);
       self.$emit("loadImage", reader.result);
     };
     reader.readAsDataURL(file);

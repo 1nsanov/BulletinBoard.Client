@@ -68,7 +68,11 @@
       <ui-input label="Редактирование" v-model="updatedCategory.Name" />
     </div>
     <div class="categories-label-item">
-      <ui-input label="Редактирование" v-model="updatedSubCategory.Name" />
+      <ui-input
+        label="Редактирование"
+        v-model="updatedSubCategory.Name"
+        :readonly="updatedSubCategory.Id == 0"
+      />
     </div>
   </div>
 
@@ -79,16 +83,23 @@
     </div>
     <div class="categories-label-item df">
       <ui-preview-image :image="updatedSubCategory.Image" />
-      <ui-input-image @loadImage="loadImageUpdatedSubCategory" />
+      <ui-input-image
+        @loadImage="loadImageUpdatedSubCategory"
+        v-if="updatedSubCategory.Id != 0"
+      />
     </div>
   </div>
 
   <div class="categories-label">
     <div class="categories-label-item">
-      <ui-button>Редактировать</ui-button>
+      <ui-button @onClick="UpdateCategory">Редактировать</ui-button>
     </div>
     <div class="categories-label-item">
-      <ui-button>Редактировать</ui-button>
+      <ui-button
+        @onClick="UpdateSubCategory"
+        :disabled="updatedSubCategory.Id == 0"
+        >Редактировать</ui-button
+      >
     </div>
   </div>
   <!-- Редактирование конец -->
@@ -133,8 +144,10 @@ export default class CategoryManager extends Vue {
 
   isLoadCreateCategory: boolean = false;
   isLoadCreateSubCategory: boolean = false;
-  isLoadEdit: boolean = false;
-  isLoadRemove: boolean = false;
+  isLoadUpdatedCategory: boolean = false;
+  isLoadUpdatedSubCategory: boolean = false;
+  isLoadRemovedCategory: boolean = false;
+  isLoadRemovedSubCategory: boolean = false;
 
   @Watch("valueCategory", { deep: true })
   onValueTown() {
@@ -144,11 +157,7 @@ export default class CategoryManager extends Vue {
     );
     console.log(this.currentItem);
 
-    if (this.currentItem && this.currentItem.subCategories) {
-      this.subCategoryItems = this.currentItem.subCategories.map((x, i) => {
-        return new SelectOptionModel(x.id, x.name);
-      });
-    }
+    this.setSubCategoryItem();
 
     this.updatedCategory = new SelectedCategoryModel({
       Id: this.currentItem.id,
@@ -160,15 +169,33 @@ export default class CategoryManager extends Vue {
   @Watch("valueSubCategory", { deep: true })
   onValueSubCategory() {
     if (!this.currentItem) return;
+    var targetId = this.valueSubCategory ? this.valueSubCategory.Id : 0;
     var currentSubItem = this.currentItem.subCategories.find(
-      (x) => x.id === this.valueSubCategory.Id
+      (x) => x.id === targetId
     );
+
     if (currentSubItem) {
+      this.updatedSubCategory = new SelectedCategoryModel({
+        Id: currentSubItem.id,
+        Name: currentSubItem.name,
+        Image: currentSubItem.imageUrl,
+        ParentId: this.currentItem.id,
+      });
+    } else {
+      this.updatedSubCategory = new SelectedCategoryModel();
     }
   }
 
   created() {
     this.GetAllCategory();
+  }
+
+  setSubCategoryItem() {
+    if (this.currentItem && this.currentItem.subCategories) {
+      this.subCategoryItems = this.currentItem.subCategories.map((x, i) => {
+        return new SelectOptionModel(x.id, x.name);
+      });
+    }
   }
 
   async GetAllCategory() {
@@ -216,6 +243,43 @@ export default class CategoryManager extends Vue {
     this.isLoadCreateSubCategory = false;
     this.imgCreatedSubCategory = null;
     this.nameCreatedSubCategory = "";
+  }
+
+  async UpdateCategory() {
+    if (this.updatedCategory.Name.length === 0) {
+      alert("Пустое поле ввода названия категории");
+      return;
+    }
+    this.isLoadUpdatedCategory = true;
+    await this.$api.CategoryService.UpdateCategory({
+      id: this.updatedCategory.Id,
+      name: this.updatedCategory.Name,
+      imageUrl: this.updatedCategory.Image,
+    }).then((res) => {
+      this.checkedSuccess(res, "Категория успешно обновлена");
+    });
+    this.isLoadUpdatedCategory = false;
+    this.updatedCategory = new SelectedCategoryModel();
+  }
+
+  async UpdateSubCategory() {
+    if (this.updatedSubCategory.Name.length === 0) {
+      alert("Пустое поле ввода названия категории");
+      return;
+    }
+    this.isLoadUpdatedSubCategory = true;
+    await this.$api.CategoryService.UpdateCategory({
+      id: this.updatedSubCategory.Id,
+      name: this.updatedSubCategory.Name,
+      imageUrl: this.updatedSubCategory.Image,
+      parentId: this.updatedSubCategory.ParentId,
+    }).then((res) => {
+      this.checkedSuccess(res, "Подкатегория успешно обновлена");
+    });
+    this.isLoadUpdatedSubCategory = false;
+    this.updatedSubCategory = new SelectedCategoryModel();
+    this.valueSubCategory = null;
+    this.subCategoryItems = [];
   }
 
   loadImageCreateCategory(img: any) {
