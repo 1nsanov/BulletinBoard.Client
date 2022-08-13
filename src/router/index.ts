@@ -3,6 +3,7 @@ import BaseLayout from '../components/layouts/base-layout.vue'
 import HomePage from "../views/home-page.vue"
 import AuthPage from "../views/auth-page.vue"
 import AdminPage from "../views/admin-page.vue"
+import AdvertisementUpdatePage from "../views/advertisement-update-page.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +25,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'admin',
         path: '/admin',
         component: AdminPage,
+      },
+      {
+        name: 'advertisement-update',
+        path: '/advertisement/update',
+        component: AdvertisementUpdatePage,
       },
     ],
   }

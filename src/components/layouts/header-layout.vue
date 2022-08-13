@@ -1,11 +1,11 @@
 <template>
   <div class="header">
     <div class="header_main _container" v-if="!isAuthorization">
-      <div class="header_main_auth">
+      <div class="header_main_auth" @click="goToHome"> 
         <img src="@/assets/icons/door-enter.svg" alt="" />
       </div>
       <div class="header_main_content">
-        <div class="wrapper-filters" v-if="!isAdminPage">
+        <div class="wrapper-filters" v-if="isHomePage">
           <dropdown-header-filter :items="towns" @select="selectTown" />
           <dropdown-header-filter
             :items="categories"
@@ -103,12 +103,20 @@ export default class HeaderLayout extends Vue {
     this.$router.push({ name: "auth" });
   }
 
+  goToHome(){
+    this.$router.push({ name: "home" });
+  }
+
   get isAuthorization() {
     return this.$route.name === "auth";
   }
 
   get isAdminPage() {
     return this.$route.name === "admin";
+  }
+
+  get isHomePage(){
+    return this.$route.name === "home";
   }
 }
 </script>
@@ -118,7 +126,7 @@ export default class HeaderLayout extends Vue {
   width: 100%;
   ._container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
   }
   .header_main {

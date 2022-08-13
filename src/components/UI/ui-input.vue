@@ -83,6 +83,14 @@ export default class UiInput extends Vue {
   .base-input:focus {
     border-color: #1977d6;
   }
+  .base-input::-webkit-outer-spin-button,
+  .base-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .base-input[type="number"] {
+    -moz-appearance: textfield;
+  }
 
   .default-thema {
     border: 2px solid #ffffff;

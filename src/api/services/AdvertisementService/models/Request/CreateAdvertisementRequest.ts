@@ -1,13 +1,13 @@
 export default class CreateAdvertisementRequest {
-  title: string = null;
-  description: string = null;
-  phoneNumber: string = null;
+  title: string = "";
+  description: string = "";
+  phoneNumber: string = "";
   price: number = 0;
   imageUrl?: string = null;
-  userId: number = 0;
-  categoryId: number = 0;
-  subCategoryId?: number = 0;
-  townId: number = 0;
+  userId: number = null;
+  categoryId: number = null;
+  subCategoryId?: number = null;
+  townId: number = null;
 
   constructor(obj?: Partial<CreateAdvertisementRequest>) {
     if (obj) Object.assign(this, obj)

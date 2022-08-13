@@ -8,10 +8,10 @@
   >
     <div
       class="ui_input_header"
-      v-if="headerText.length != 0"
+      v-if="label.length != 0"
       :class="[isWrong ? 'wrong_text' : '']"
     >
-      {{ headerText }}
+      {{ label }}
     </div>
     <div v-if="!open || !autocomplete">
       <slot name="current" :key="innerValue" :value="active">
@@ -97,7 +97,7 @@ import SelectOptionModel from "./models/SelectOptionModel";
   emits: ["update:modelValue", "currentClick"],
 })
 export default class UiSelectComponent extends Vue {
-  @Prop({ default: "" }) headerText: string;
+  @Prop({ default: "" }) label: string;
   @Prop() keyField?: string;
   @Prop() valueField?: string;
   // todo: сделать проверку на повторяющиеся значения ключей и кидать ошибку/предупреждение
@@ -588,10 +588,9 @@ export default class UiSelectComponent extends Vue {
   }
 }
 .ui_input_header {
-  font-size: 14px;
-  line-height: 14px;
-  color: #8e97a1;
-  margin-bottom: 12px;
+  display: flex;
+  font-size: 18px;
+  margin: 10px 0;
   cursor: default;
 }
 @media (max-width: 991px) {

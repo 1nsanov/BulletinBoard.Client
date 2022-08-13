@@ -6,6 +6,7 @@ import DropdownHeaderFilter from "./dropdown-haeder-filter/dropdown-haeder-filte
 import UiSelect from "./ui-select/ui-select.vue"
 import UiPreviewImage from "./preview-image/ui-preview-image.vue"
 import UiInputImage from "./ui-input-image/ui-input-image.vue"
+import UiTextarea from "./ui-textarea.vue"
 
 export default (app: App<Element>) => {
 	app.component('UiButton', UiButton)
@@ -15,4 +16,5 @@ export default (app: App<Element>) => {
 	app.component('UiSelect', UiSelect)
 	app.component('UiPreviewImage', UiPreviewImage)
 	app.component('UiInputImage', UiInputImage)
+	app.component('UiTextarea', UiTextarea)
 }
