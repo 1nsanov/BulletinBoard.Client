@@ -2,13 +2,18 @@
   <div class="dropdown-haeder-filter">
     <div
       class="placeholder-container"
-      :class="{ 'active-placeholder': isShowMenu }"
+      :class="{
+        'active-placeholder': isShowMenu && items.length > 0,
+        'hover-disabled': items.length === 0,
+      }"
       @click="toggleShowMenu"
     >
       <div class="placeholder" v-if="current">
         {{ current.Name }}
       </div>
-      <div class="placeholder" v-else>Не выбрано</div>
+      <div class="placeholder" v-else>
+        {{ items.length === 0 ? "-" : "Не выбрано" }}
+      </div>
     </div>
     <div
       v-if="isShowMenu"
@@ -54,6 +59,9 @@ export default class DropdownHeaderFilter extends Vue {
       this.innerItems = this.items;
       this.current = this.innerItems.find((x) => x.IsActive === true);
     }
+    if (this.items.length === 0) {
+      this.isShowMenu = false;
+    }
   }
 
   get topPad(): number {
@@ -61,6 +69,7 @@ export default class DropdownHeaderFilter extends Vue {
   }
 
   toggleShowMenu() {
+    if (this.items.length === 0) return;
     this.isShowMenu = !this.isShowMenu;
   }
 
@@ -92,10 +101,22 @@ export default class DropdownHeaderFilter extends Vue {
     cursor: pointer;
     border-left: 5px solid #fff;
     transition: 0.3s ease-in-out;
+    .placeholder {
+      word-break: break-all;
+    }
   }
   .active-placeholder,
   .placeholder-container:hover {
     background: rgb(55, 163, 240);
+  }
+  .hover-disabled:hover {
+    cursor: not-allowed;
+    &:hover {
+      background: rgb(46, 139, 205);
+    }
+    &.active-placeholder {
+      background: rgb(46, 139, 205);
+    }
   }
 
   .list-container {
@@ -112,6 +133,12 @@ export default class DropdownHeaderFilter extends Vue {
       font-size: 18px;
       transition: 0.3s ease-in-out;
       cursor: pointer;
+      text-overflow: ellipsis;
+      width: 100%;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       &.active {
         background: rgb(37, 90, 159);
         border-color: rgb(33, 223, 29);

@@ -7,8 +7,14 @@
       <div class="header_main_content">
         <div class="wrapper-filters" v-if="!isAdminPage">
           <dropdown-header-filter :items="towns" @select="selectTown" />
-          <dropdown-header-filter :items="categories" />
-          <dropdown-header-filter :items="subCategories" />
+          <dropdown-header-filter
+            :items="categories"
+            @select="selectCategory"
+          />
+          <dropdown-header-filter
+            :items="subCategories"
+            @select="selectSubCategory"
+          />
         </div>
       </div>
       <div class="header_main_auth" @click="goToAuth">
@@ -19,6 +25,7 @@
 </template>
 
 <script lang="ts">
+import GetAllCategoryResponse from "@/api/services/CategoryService/models/Response/GetAllCategoryResponse";
 import { Options, Vue } from "vue-class-component";
 import { Watch } from "vue-property-decorator";
 import OptionModel from "../UI/dropdown-haeder-filter/models/OptionModel";
@@ -28,14 +35,38 @@ import OptionModel from "../UI/dropdown-haeder-filter/models/OptionModel";
 })
 export default class HeaderLayout extends Vue {
   towns: Array<OptionModel> = [];
+  selectedTown: OptionModel = null;
   categories: Array<OptionModel> = [];
+  selectedCategory: OptionModel = null;
   subCategories: Array<OptionModel> = [];
+  selectedSubCategory: OptionModel = null;
 
-  created() {
+  categoriesData: GetAllCategoryResponse[] = [];
+
+  @Watch("isAdminPage")
+  getAllData() {
     this.GetAllTown();
+    this.GetAllCategory();
   }
 
-  @Watch('isAdminPage')
+  @Watch("selectedCategory", { deep: true })
+  onSelectedCategory() {
+    if (!this.selectedCategory) return;
+
+    var category = this.categoriesData.find(
+      (x) => x.id === this.selectedCategory.Id
+    );
+    if (category && category.subCategories) {
+      this.subCategories = category.subCategories.map(
+        (x) => new OptionModel({ Id: x.id, Name: x.name, IsActive: false })
+      );
+    }
+  }
+
+  created() {
+    this.getAllData();
+  }
+
   async GetAllTown() {
     await this.$api.TownService.GetAllTown().then((res) => {
       if (res.isSuccess)
@@ -45,8 +76,26 @@ export default class HeaderLayout extends Vue {
     });
   }
 
-  selectTown(town: OptionModel) {
-    console.log(town);
+  async GetAllCategory() {
+    await this.$api.CategoryService.GetAllCategory().then((res) => {
+      if (res.isSuccess) {
+        this.categoriesData = res.value;
+        this.categories = res.value.map((x, i) => {
+          return new OptionModel({ Id: x.id, Name: x.name, IsActive: false });
+        });
+        console.log(this.categories);
+      }
+    });
+  }
+
+  selectTown(item: OptionModel) {
+    this.selectedTown = item;
+  }
+  selectCategory(item: OptionModel) {
+    this.selectedCategory = item;
+  }
+  selectSubCategory(item: OptionModel) {
+    this.selectedSubCategory = item;
   }
 
   goToAuth() {
@@ -58,7 +107,7 @@ export default class HeaderLayout extends Vue {
     return this.$route.name === "auth";
   }
 
-  get isAdminPage(){
+  get isAdminPage() {
     return this.$route.name === "admin";
   }
 }
@@ -91,7 +140,7 @@ export default class HeaderLayout extends Vue {
         padding: 0 15px;
         max-width: calc(994px + 15px);
       }
-      .wrapper-filters{
+      .wrapper-filters {
         display: flex;
         width: 100%;
         height: 100%;

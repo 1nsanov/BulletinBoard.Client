@@ -15,10 +15,9 @@
         На главную
       </ui-button>
     </div>
-    <category-manager />
     <div class="home-page-content" v-if="menuOptionValue">
       <town-manager v-if="menuOptionValue.Id === 1" />
-      <!-- <category-manager v-if="menuOptionValue.Id === 2" /> -->
+      <category-manager v-if="menuOptionValue.Id === 2" />
     </div>
   </div>
 </template>
