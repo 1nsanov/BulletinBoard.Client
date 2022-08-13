@@ -84,7 +84,6 @@ export default class HeaderLayout extends Vue {
         this.categories = res.value.map((x, i) => {
           return new OptionModel({ Id: x.id, Name: x.name, IsActive: false });
         });
-        console.log(this.categories);
       }
     });
   }

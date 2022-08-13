@@ -29,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         name: 'advertisement-update',
-        path: '/advertisement/update',
+        path: '/advertisement/update/:id?',
         component: AdvertisementUpdatePage,
       },
       {

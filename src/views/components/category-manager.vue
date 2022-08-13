@@ -224,7 +224,6 @@ export default class CategoryManager extends Vue {
     await this.$api.CategoryService.GetAllCategory().then((res) => {
       if (res.isSuccess) {
         this.categoriesData = res.value;
-        console.log(this.categoriesData);
         this.categoryItems = res.value.map((x, i) => {
           return new SelectOptionModel(x.id, x.name);
         });
@@ -336,7 +335,6 @@ export default class CategoryManager extends Vue {
   }
 
   checkedSuccess(res: BaseResponse, msg: string) {
-    console.log(res);
     if (res.isSuccess) {
       alert(msg);
       this.GetAllCategory();

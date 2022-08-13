@@ -59,12 +59,18 @@ export default class AdvertisementDetailPage extends Vue {
     await this.$api.AdvertisementService.GetAdvertisementDetail({
       id: id,
     }).then((res) => {
-      console.log(res);
       this.advertisement = res.value;
     });
   }
 
-  goToUpdate() {}
+  goToUpdate() {
+    this.$router.push({
+      name: "advertisement-update",
+      params: {
+        id: this.advertisement.id.toString(),
+      },
+    });
+  }
 
   remove() {
     this.$api.AdvertisementService.RemoveAdvertisement({
