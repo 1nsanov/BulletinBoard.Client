@@ -18,7 +18,6 @@
           v-for="item in advertisementList"
           :key="item.id"
           :item="item"
-          @select="selectAdvertisement"
         />
       </advertisement-list>
     </div>
@@ -52,14 +51,6 @@ export default class HomePage extends Vue {
 
   goToCreateAdvertisement() {
     this.$router.push({ name: "advertisement-update" });
-  }
-
-  async selectAdvertisement(id: number) {
-    await this.$api.AdvertisementService.GetAdvertisementDetail({
-      id: id,
-    }).then((res) => {
-      console.log(res);
-    });
   }
 }
 </script>

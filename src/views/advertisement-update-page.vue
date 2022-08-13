@@ -98,6 +98,7 @@ export default class AdvertisementUpdatePage extends Vue {
     this.advertisement.categoryId = this.valueSubCategory
       ? this.valueSubCategory.Id
       : null;
+    console.log(this.advertisement.categoryId);
   }
 
   created() {
@@ -130,7 +131,7 @@ export default class AdvertisementUpdatePage extends Vue {
     console.log(this.advertisement);
     await this.$api.AdvertisementService.CreateAdvertisement({
       title: this.advertisement.title,
-      description: this.advertisement.title,
+      description: this.advertisement.description,
       phoneNumber: this.advertisement.phoneNumber,
       price: this.advertisement.price,
       userId: this.advertisement.userId,

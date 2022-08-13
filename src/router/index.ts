@@ -4,6 +4,7 @@ import HomePage from "../views/home-page.vue"
 import AuthPage from "../views/auth-page.vue"
 import AdminPage from "../views/admin-page.vue"
 import AdvertisementUpdatePage from "../views/advertisement-update-page.vue"
+import AdvertisementDetailPage from "../views/advertisement-detail-page.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +31,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'advertisement-update',
         path: '/advertisement/update',
         component: AdvertisementUpdatePage,
+      },
+      {
+        name: 'advertisement-detail',
+        path: '/advertisement/detail/:id?',
+        component: AdvertisementDetailPage,
       },
     ],
   }
