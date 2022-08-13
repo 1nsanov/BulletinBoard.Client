@@ -18,6 +18,13 @@
     <div class="home-page-content" v-if="menuOptionValue">
       <town-manager v-if="menuOptionValue.Id === 1" />
       <category-manager v-if="menuOptionValue.Id === 2" />
+      <advertisement-list v-if="menuOptionValue.Id === 3">
+        <advertisement-item
+          v-for="item in advertisementList"
+          :key="item.id"
+          :item="item"
+        />
+      </advertisement-list>
     </div>
   </div>
 </template>
@@ -26,15 +33,25 @@
 import SelectOptionModel from "@/components/UI/ui-select/models/SelectOptionModel";
 import TownManager from "@/views/components/town-manager.vue";
 import CategoryManager from "@/views/components/category-manager.vue";
+import AdvertisementList from "./components/advertisement-list/advertisement-list.vue";
+import AdvertisementItem from "./components/advertisement-list/advertisement-item.vue";
+import AdvertisementListItemModel from "@/api/services/AdvertisementService/models/AdvertisementListItemModel";
+
 import { Options, Vue } from "vue-class-component";
 import { Watch } from "vue-property-decorator";
 @Options({
   name: "admin-page",
-  components: { TownManager, CategoryManager },
+  components: {
+    TownManager,
+    CategoryManager,
+    AdvertisementList,
+    AdvertisementItem,
+  },
 })
 export default class AdminPage extends Vue {
   menuOption: SelectOptionModel[] = [];
   menuOptionValue: SelectOptionModel = null;
+  advertisementList: AdvertisementListItemModel[] = [];
 
   @Watch("menuOptionValue")
   onMenuOptionValue() {}
@@ -49,6 +66,12 @@ export default class AdminPage extends Vue {
       new SelectOptionModel(2, "Категории"),
       new SelectOptionModel(3, "Объявления")
     );
+
+    this.$api.AdvertisementService.GetAdvertisementList().then((res) => {
+      if (res.isSuccess) {
+        this.advertisementList = res.value;
+      }
+    });
   }
 
   goToHome() {

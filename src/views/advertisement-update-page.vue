@@ -55,7 +55,7 @@
       <ui-button
         size="big"
         :color="!isModeUpdate ? 'green' : 'default'"
-        @onClick="CreateAdvertisement"
+        @onClick="actionAdvertisement"
       >
         {{ !isModeUpdate ? "Создать" : "Редактировать" }}
       </ui-button>
@@ -105,22 +105,23 @@ export default class AdvertisementUpdatePage extends Vue {
       : null;
   }
 
-  created() {
-    this.GetAllTown();
-    this.GetAllCategory();
-    this.getAdvertisement();
+  async created() {
+    await this.GetAllTown();
+    await this.GetAllCategory();
+    await this.getAdvertisement();
   }
 
-  getAdvertisement() {
+  async getAdvertisement() {
     var id = this.$route.params.id;
     if (!!id) {
       this.isModeUpdate = true;
-      this.$api.AdvertisementService.GetAdvertisementDetail({
+      await this.$api.AdvertisementService.GetAdvertisementDetail({
         id: parseInt(id.toString()),
       }).then((res) => {
         if (res.isSuccess) {
           var v = res.value;
           this.advertisement = new AdvertisementModel({
+            id: v.id,
             title: v.title,
             description: v.description,
             phoneNumber: v.phoneNumber,
@@ -129,6 +130,7 @@ export default class AdvertisementUpdatePage extends Vue {
             categoryId: v.categoryId,
             subCategoryId: v.subCategoryId,
             townId: v.townId,
+            userId: v.userId,
           });
           this.valueTown = new SelectOptionModel(v.townId, v.townName);
           this.valueCategory = new SelectOptionModel(
@@ -163,6 +165,11 @@ export default class AdvertisementUpdatePage extends Vue {
     this.advertisement.imageUrl = img;
   }
 
+  actionAdvertisement() {
+    if (!this.isModeUpdate) this.CreateAdvertisement();
+    else this.UpdateAdvertisement();
+  }
+
   CreateAdvertisement() {
     this.advertisement.userId = this.$api.AuthService.User.id;
     var valid = this.validation();
@@ -189,12 +196,32 @@ export default class AdvertisementUpdatePage extends Vue {
     });
   }
 
-  UpdateAdvertisement(){
-
+  UpdateAdvertisement() {
+    var valid = this.validation();
+    if (!valid) {
+      alert("Заполнены не все поля");
+      return;
+    }
+    this.$api.AdvertisementService.UpdateAdvertisement({
+      id: this.advertisement.id,
+      title: this.advertisement.title,
+      description: this.advertisement.description,
+      phoneNumber: this.advertisement.phoneNumber,
+      price: this.advertisement.price,
+      categoryId: this.advertisement.categoryId,
+      subCategoryId: this.advertisement.subCategoryId,
+      townId: this.advertisement.townId,
+      imageUrl: this.advertisement.imageUrl,
+    }).then((res) => {
+      if (res.isSuccess) {
+        alert("Объявление успешно отредактировано");
+        this.$router.push({ name: "home" });
+      } else alert(res.message);
+    });
   }
 
-  GetAllTown() {
-    this.$api.TownService.GetAllTown().then((res) => {
+  async GetAllTown() {
+    await this.$api.TownService.GetAllTown().then((res) => {
       if (res.isSuccess)
         this.townItems = res.value.map(
           (x, i) => new SelectOptionModel(x.id, x.name)
@@ -202,8 +229,8 @@ export default class AdvertisementUpdatePage extends Vue {
     });
   }
 
-  GetAllCategory() {
-    this.$api.CategoryService.GetAllCategory().then((res) => {
+  async GetAllCategory() {
+    await this.$api.CategoryService.GetAllCategory().then((res) => {
       if (res.isSuccess) {
         this.categoriesData = res.value;
         this.categoryItems = res.value.map((x, i) => {

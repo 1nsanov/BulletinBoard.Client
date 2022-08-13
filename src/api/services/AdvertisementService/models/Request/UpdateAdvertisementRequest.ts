@@ -1,13 +1,13 @@
 export default class UpdateAdvertisementRequest {
-  Id: number = 0
-  Title: string = null;
-  Description: string = null;
-  PhoneNumber: string = null;
-  Price: number = 0;
-  ImageUrl?: string = null;
-  CategoryId: number = 0
-  SubCategoryId: number = 0
-  TownId: number = 0
+  id: number = 0
+  title: string = null;
+  description: string = null;
+  phoneNumber: string = null;
+  price: number = 0;
+  imageUrl?: string = null;
+  categoryId: number = 0
+  subCategoryId: number = 0
+  townId: number = 0
 
   constructor(obj?: Partial<UpdateAdvertisementRequest>) {
     if (obj) Object.assign(this, obj)

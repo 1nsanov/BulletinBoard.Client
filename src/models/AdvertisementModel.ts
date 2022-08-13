@@ -1,4 +1,5 @@
 export default class AdvertisementModel{
+  id: number = null;
   title: string = null;
   description: string = null;
   phoneNumber: string = null;

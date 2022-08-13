@@ -6,6 +6,7 @@ import CreateAdvertisementRequest from "./models/Request/CreateAdvertisementRequ
 import GetAdvertisementDetailRequest from "./models/Request/GetAdvertisementDetailRequest";
 import GetAdvertisementListRequest from "./models/Request/GetAdvertisementListRequest";
 import RemoveAdvertisementRequest from "./models/Request/RemoveAdvertisementRequest";
+import UpdateAdvertisementRequest from "./models/Request/UpdateAdvertisementRequest";
 
 export default class AdvertisementService {
   private apiUrl: string = "";
@@ -62,7 +63,7 @@ export default class AdvertisementService {
     })
   }
 
-  async UpdateAdvertisement(request: CreateAdvertisementRequest): Promise<BaseResponse> {
+  async UpdateAdvertisement(request: UpdateAdvertisementRequest): Promise<BaseResponse> {
     return new Promise(async (rs, rj) => {
       const res = fetch(this.apiUrl + "UpdateAdvertisement", {
         method: "PUT",

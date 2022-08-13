@@ -12,6 +12,7 @@ export default class AdvertisementItemDetailModel {
   subCategoryName?: string = null;
   townId: number = null;
   townName: string = null;
+  userId: number = null;
 
   constructor(obj?: Partial<AdvertisementItemDetailModel>) {
     if (obj) Object.assign(this, obj)
