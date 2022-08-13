@@ -1,23 +1,33 @@
 <template>
-  <div class="advertisement-item">
+  <div class="advertisement-item" @click="select">
     <div class="content">
       <div class="content_image">
-        <ui-preview-image size="75px" />
+        <ui-preview-image size="75px" :image="item.imageUrl" />
       </div>
       <div class="content_body">
-        <div class="content_body_title">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla, atque.</div>
-        <div class="content_body_price">100$</div>
+        <div class="content_body_title">
+          {{ item.title }}
+        </div>
+        <div class="content_body_price">{{ item.price }}$</div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import AdvertisementListItemModel from "@/api/services/AdvertisementService/models/AdvertisementListItemModel";
 import { Options, Vue } from "vue-class-component";
+import { Prop } from "vue-property-decorator";
 @Options({
   name: "advertisement-item",
 })
-export default class AdvertisementItem extends Vue {}
+export default class AdvertisementItem extends Vue {
+  @Prop({ default: null }) item: AdvertisementListItemModel;
+
+  select() {
+    this.$emit("select", this.item.id);
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -30,7 +40,7 @@ export default class AdvertisementItem extends Vue {}
   padding: 15px;
   cursor: pointer;
   transition: 0.5s ease-in-out;
-  &:hover{
+  &:hover {
     color: rgb(51, 52, 61);
     border-color: rgb(51, 52, 61);
     background: #fff;

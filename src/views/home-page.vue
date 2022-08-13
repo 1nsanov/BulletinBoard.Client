@@ -14,7 +14,12 @@
     </div>
     <div class="home-page_advertisement">
       <advertisement-list>
-        <advertisement-item v-for="i in 5" :key="i" />
+        <advertisement-item
+          v-for="item in advertisementList"
+          :key="item.id"
+          :item="item"
+          @select="selectAdvertisement"
+        />
       </advertisement-list>
     </div>
   </div>
@@ -24,15 +29,20 @@
 import { Options, Vue } from "vue-class-component";
 import AdvertisementList from "./components/advertisement-list/advertisement-list.vue";
 import AdvertisementItem from "./components/advertisement-list/advertisement-item.vue";
+import AdvertisementListItemModel from "@/api/services/AdvertisementService/models/AdvertisementListItemModel";
 
 @Options({
   name: "home-page",
   components: { AdvertisementList, AdvertisementItem },
 })
 export default class HomePage extends Vue {
+  advertisementList: AdvertisementListItemModel[] = [];
+
   created() {
     this.$api.AdvertisementService.GetAdvertisementList().then((res) => {
-      console.log(res);
+      if (res.isSuccess) {
+        this.advertisementList = res.value;
+      }
     });
   }
 
@@ -42,6 +52,14 @@ export default class HomePage extends Vue {
 
   goToCreateAdvertisement() {
     this.$router.push({ name: "advertisement-update" });
+  }
+
+  async selectAdvertisement(id: number) {
+    await this.$api.AdvertisementService.GetAdvertisementDetail({
+      id: id,
+    }).then((res) => {
+      console.log(res);
+    });
   }
 }
 </script>
