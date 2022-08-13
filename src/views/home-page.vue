@@ -12,13 +12,22 @@
         <div class="create-btn-content">Создать объявление</div>
       </div>
     </div>
+    <div class="home-page_advertisement">
+      <advertisement-list>
+        <advertisement-item v-for="i in 5" :key="i" />
+      </advertisement-list>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import AdvertisementList from "./components/advertisement-list/advertisement-list.vue";
+import AdvertisementItem from "./components/advertisement-list/advertisement-item.vue";
+
 @Options({
   name: "home-page",
+  components: { AdvertisementList, AdvertisementItem },
 })
 export default class HomePage extends Vue {
   created() {
@@ -41,7 +50,7 @@ export default class HomePage extends Vue {
 .home-page {
   display: flex;
   flex-direction: column;
-  padding-top: 30px;
+  padding: 30px 0;
   .home-page_create-btn {
     margin: 20px 0;
     .create-btn_container {
