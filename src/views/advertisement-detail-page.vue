@@ -24,9 +24,12 @@
             {{ advertisement.description }}
           </div>
         </div>
-        <div class="label-body-selects"></div>
+        <div class="label-body-tags">
+          <div class="label-body-tags-title">Метки:</div>
+          <div class="label-body-tags-body">{{ tags }}</div>
+        </div>
       </div>
-      <div class="label-footer">
+      <div class="label-footer" v-if="isMyAdvert">
         <ui-button class="footer-btn" size="medium" @onClick="goToUpdate">
           Редактировать
         </ui-button>
@@ -81,6 +84,22 @@ export default class AdvertisementDetailPage extends Vue {
         this.$router.push({ name: "home" });
       }
     });
+  }
+
+  get isMyAdvert(): boolean {
+    return this.$api.AuthService.IsLogin
+      ? this.$api.AuthService.User.id === this.advertisement.userId
+      : false;
+  }
+
+  get tags(): string {
+    return `${this.advertisement.townName}  |  ${
+      this.advertisement.categoryName
+    } ${
+      !!this.advertisement.subCategoryName
+        ? " | " + this.advertisement.subCategoryName
+        : ""
+    }`;
   }
 }
 </script>
@@ -157,6 +176,19 @@ export default class AdvertisementDetailPage extends Vue {
           margin: 0 0 20px 0;
         }
         .label-body-description-body {
+        }
+      }
+      .label-body-tags {
+        .label-body-tags-title {
+          font-weight: 600;
+          font-size: 20px;
+          line-height: 20px;
+          margin-bottom: 10px;
+        }
+        .label-body-tags-body {
+          font-size: 14px;
+          line-height: 14px;
+          letter-spacing: 1.1px;
         }
       }
     }

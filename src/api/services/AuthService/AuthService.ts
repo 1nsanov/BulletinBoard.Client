@@ -6,6 +6,7 @@ import SingUpReqeust from "./models/Request/SingUpReqeust";
 import CheckExistUserRequest from "./models/Response/CheckExistUserRequest";
 import RecoveryPasswordRequest from "./models/Request/RecoveryPasswordRequest";
 import cookieService from "../Cookie/cookie.service";
+import EnumUserRole from "../../models/enum/EnumUserRole"
 
 export default class AuthService {
   private apiUrl: string = "";
@@ -14,6 +15,10 @@ export default class AuthService {
 
   get IsLogin(): boolean {
     return !!this.User;
+  }
+
+  get IsAdmin(): boolean {
+    return this.User.userRole == EnumUserRole.Admin
   }
 
   constructor(apiUrl: string) {

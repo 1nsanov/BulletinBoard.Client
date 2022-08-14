@@ -48,7 +48,7 @@ export default class HeaderLayout extends Vue {
 
   categoriesData: GetAllCategoryResponse[] = [];
 
-  @Watch("isAdminPage")
+  @Watch("isAdvertisement")
   getAllData() {
     if (!this.isAdvertisement) return;
     this.GetAllTown();
@@ -92,6 +92,7 @@ export default class HeaderLayout extends Vue {
         });
       }
     });
+    this.subCategories = [];
   }
 
   selectTown(item: OptionModel) {

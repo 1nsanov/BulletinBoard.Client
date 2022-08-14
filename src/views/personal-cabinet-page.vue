@@ -11,7 +11,7 @@
       </ui-button>
       <ui-button
         class="btn"
-        v-if="$api.AuthService.IsLogin"
+        v-if="$api.AuthService.IsAdmin"
         color="green"
         @onClick="goToAdminPanel"
       >
@@ -20,7 +20,7 @@
     </div>
 
     <div class="personal-cabinet_advertisements">
-      <advertisements :isPersonal="true"/>
+      <advertisements :isPersonal="true" />
     </div>
   </div>
 </template>
@@ -41,7 +41,9 @@ export default class PersonalCabinetPage extends Vue {
   logout() {
     this.$api.AuthService.removeUserFromCookie();
     this.$router.push({ name: "auth" });
-    location.reload();
+    setTimeout(() => {
+      location.reload();
+    }, 100);
   }
 }
 </script>

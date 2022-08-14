@@ -25,6 +25,7 @@ export default class AdvertisementItem extends Vue {
   @Prop({ default: null }) item: AdvertisementListItemModel;
 
   select() {
+    console.log(this.item.id);
     this.$router.push({
       name: "advertisement-detail",
       params: {

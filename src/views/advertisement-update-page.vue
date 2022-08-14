@@ -202,6 +202,8 @@ export default class AdvertisementUpdatePage extends Vue {
       alert("Заполнены не все поля");
       return;
     }
+    console.log(this.advertisement);
+    
     this.$api.AdvertisementService.UpdateAdvertisement({
       id: this.advertisement.id,
       title: this.advertisement.title,
