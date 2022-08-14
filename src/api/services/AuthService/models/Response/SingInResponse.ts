@@ -1,3 +1,5 @@
+import EnumUserRole from "@/api/models/enum/EnumUserRole";
+
 export default class SingInResponse {
   id: number = 0;
   userName: string = null;

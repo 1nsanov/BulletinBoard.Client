@@ -1,6 +1,7 @@
 <template>
   <div class="categories-label">
     <ui-select
+      v-if="!isLoad"
       :placeholder="!!categoryItems ? 'Выбрать категорию' : 'Загрузка...'"
       :items="categoryItems"
       v-model="valueCategory"
@@ -172,6 +173,8 @@ export default class CategoryManager extends Vue {
   isLoadRemovedCategory: boolean = false;
   isLoadRemovedSubCategory: boolean = false;
 
+  isLoad: boolean = true;
+
   @Watch("valueCategory", { deep: true })
   onValueCategory() {
     if (!this.valueCategory) return;
@@ -208,8 +211,8 @@ export default class CategoryManager extends Vue {
     }
   }
 
-  created() {
-    this.GetAllCategory();
+  async created() {
+    await this.GetAllCategory();
   }
 
   setSubCategoryItem() {
@@ -227,8 +230,9 @@ export default class CategoryManager extends Vue {
         this.categoryItems = res.value.map((x, i) => {
           return new SelectOptionModel(x.id, x.name);
         });
-      }
+      } else alert(res.message);
     });
+    this.isLoad = false;
   }
 
   async CreateCategory() {
@@ -339,7 +343,7 @@ export default class CategoryManager extends Vue {
       alert(msg);
       this.GetAllCategory();
       this.updatedCategory = new SelectedCategoryModel();
-      this.updatedSubCategory  = new SelectedCategoryModel();
+      this.updatedSubCategory = new SelectedCategoryModel();
       this.subCategoryItems = [];
     } else {
       alert(res.message);
@@ -363,6 +367,8 @@ export default class CategoryManager extends Vue {
 }
 .df {
   display: flex;
-  align-items: center;
+  align-items: start;
+  flex-direction: column;
+  gap: 8px;
 }
 </style>

@@ -191,7 +191,7 @@ export default class AdvertisementUpdatePage extends Vue {
     }).then((res) => {
       if (res.isSuccess) {
         alert("Объявление успешно создано");
-        this.$router.push({ name: "home" });
+        this.$router.push({ name: "cabinet" });
       } else alert(res.message);
     });
   }
@@ -217,7 +217,7 @@ export default class AdvertisementUpdatePage extends Vue {
     }).then((res) => {
       if (res.isSuccess) {
         alert("Объявление успешно отредактировано");
-        this.$router.push({ name: "home" });
+        this.$router.push({ name: "cabinet" });
       } else alert(res.message);
     });
   }

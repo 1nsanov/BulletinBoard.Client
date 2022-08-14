@@ -81,7 +81,7 @@ export default class AdvertisementDetailPage extends Vue {
     }).then((res) => {
       if (res.isSuccess) {
         alert("Объявление успешно удалено");
-        this.$router.push({ name: "home" });
+        this.$router.push({ name: "cabinet" });
       }
     });
   }

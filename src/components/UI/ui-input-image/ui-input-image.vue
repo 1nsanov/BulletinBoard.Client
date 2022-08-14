@@ -1,7 +1,13 @@
 <template>
-  <div class="ui-input-image">
-    <input type="file" accept="image/png, image/jpeg" @change="loadFile" />
-  </div>
+  <label class="ui-input-image">
+    Выбрать файл
+    <input
+      class="input-image"
+      type="file"
+      accept="image/png, image/jpeg"
+      @change="loadFile"
+    />
+  </label>
 </template>
 
 <script lang="ts">
@@ -24,4 +30,30 @@ export default class UiInputImage extends Vue {
 </script>
 
 <style lang="less" scoped>
+.ui-input-image {
+  display: flex;
+  width: 160px;
+  justify-content: center;
+  background: #fff;
+  color: #232323;
+  border: 3px solid #232323;
+  border-radius: 8px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: 0.3s ease-in-out;
+  input{
+    display: none;
+  }
+}
+.ui-input-image:active ,
+.ui-input-image:hover {
+  background: #232323;
+  color: #fff;
+  border-color: #fff;
+}
 </style>

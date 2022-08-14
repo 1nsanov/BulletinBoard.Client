@@ -70,6 +70,7 @@ export default class AdvertisementItem extends Vue {
         font-weight: 700;
         text-align: right;
         margin-bottom: 15px;
+        // word-break: break-all;
       }
       .content_body_price {
         font-size: 18px;
