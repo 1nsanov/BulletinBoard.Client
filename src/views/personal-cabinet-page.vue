@@ -40,7 +40,7 @@ export default class PersonalCabinetPage extends Vue {
 
   logout() {
     this.$api.AuthService.removeUserFromCookie();
-    this.$router.push({ name: "auth" });
+    this.$router.push({ name: "home" });
     setTimeout(() => {
       location.reload();
     }, 100);
