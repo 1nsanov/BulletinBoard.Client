@@ -1,21 +1,21 @@
 <template>
-  <div class="home-page">
-    <div class="home-page-haader">
+  <div class="admin-page">
+    <div class="admin-page-haader">
       <ui-select
-        class="home-page-haader_item"
+        class="admin-page-haader_item"
         placeholder="Выбрать"
         :items="menuOption"
         v-model="menuOptionValue"
       />
       <ui-button
-        class="home-page-haader_item"
+        class="admin-page-haader_item"
         size="medium"
         @onClick="goToHome"
       >
         На главную
       </ui-button>
     </div>
-    <div class="home-page-content" v-if="menuOptionValue">
+    <div class="admin-page-content" v-if="menuOptionValue">
       <town-manager v-if="menuOptionValue.Id === 1" />
       <category-manager v-if="menuOptionValue.Id === 2" />
       <advertisements v-if="menuOptionValue.Id === 3" />
@@ -77,24 +77,24 @@ export default class AdminPage extends Vue {
 </script>
 
 <style lang="less">
-.home-page {
+.admin-page {
   display: flex;
   flex-direction: column;
   padding-top: 30px;
-  .home-page-haader {
+  .admin-page-haader {
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 0 0 50%;
     margin-bottom: 40px;
-    .home-page-haader_item {
+    .admin-page-haader_item {
       width: 50%;
-      &.home-page-haader_item:first-child {
+      &.admin-page-haader_item:first-child {
         margin-right: 20px;
       }
     }
   }
-  .home-page-content {
+  .admin-page-content {
     display: flex;
     flex-direction: column;
   }

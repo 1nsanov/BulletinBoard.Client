@@ -7,6 +7,7 @@ import UiSelect from "./ui-select/ui-select.vue"
 import UiPreviewImage from "./preview-image/ui-preview-image.vue"
 import UiInputImage from "./ui-input-image/ui-input-image.vue"
 import UiTextarea from "./ui-textarea.vue"
+import UiCreateButton from "./ui-create-button.vue"
 
 export default (app: App<Element>) => {
 	app.component('UiButton', UiButton)
@@ -17,4 +18,5 @@ export default (app: App<Element>) => {
 	app.component('UiPreviewImage', UiPreviewImage)
 	app.component('UiInputImage', UiInputImage)
 	app.component('UiTextarea', UiTextarea)
+	app.component('UiCreateButton', UiCreateButton)
 }

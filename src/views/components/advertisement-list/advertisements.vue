@@ -1,4 +1,5 @@
 <template>
+  <ui-create-button class="create-btn-adv" v-if="isCreate" />
   <advertisement-list>
     <advertisement-item
       v-for="item in advertisementList"
@@ -6,6 +7,9 @@
       :item="item"
     />
   </advertisement-list>
+  <div class="stopper-empty" v-if="advertisementList.length === 0">
+    Список объявлений пуст
+  </div>
 </template>
 
 <script lang="ts">
@@ -14,13 +18,16 @@ import AdvertisementList from "./advertisement-list.vue";
 import AdvertisementItem from "./advertisement-item.vue";
 import AdvertisementListItemModel from "@/api/services/AdvertisementService/models/AdvertisementListItemModel";
 import FilterAdvertisementModel from "../../../models/FilterAdvertisementModel";
-import { Watch } from "vue-property-decorator";
+import { Prop, Watch } from "vue-property-decorator";
 
 @Options({
   name: "advertisements",
   components: { AdvertisementList, AdvertisementItem },
 })
 export default class Advertisements extends Vue {
+  @Prop({ default: true }) isCreate: boolean;
+  @Prop({ default: false }) isPersonal: boolean;
+
   advertisementList: AdvertisementListItemModel[] = [];
   filter: FilterAdvertisementModel = new FilterAdvertisementModel();
 
@@ -46,6 +53,7 @@ export default class Advertisements extends Vue {
   }
 
   created() {
+    if (this.isPersonal) this.filter.UserId = this.$api.AuthService.User.id;
     this.getAdvertisementList();
   }
 
@@ -54,6 +62,7 @@ export default class Advertisements extends Vue {
       TownId: this.filter.TownId,
       CategoryId: this.filter.CategoryId,
       SubCategoryId: this.filter.SubCategory,
+      UserId: this.filter.UserId,
     }).then((res) => {
       if (res.isSuccess) {
         this.advertisementList = res.value;
@@ -64,4 +73,14 @@ export default class Advertisements extends Vue {
 </script>
 
 <style lang="less" scoped>
+.create-btn-adv {
+  margin-bottom: 20px;
+}
+.stopper-empty {
+  width: 100%;
+  padding: 50px;
+  text-align: center;
+  font-size: 30px;
+  line-height: 35px;
+}
 </style>

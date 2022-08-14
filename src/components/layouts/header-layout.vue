@@ -50,7 +50,7 @@ export default class HeaderLayout extends Vue {
 
   @Watch("isAdminPage")
   getAllData() {
-    if (!this.isHomePage) return;
+    if (!this.isAdvertisement) return;
     this.GetAllTown();
     this.GetAllCategory();
   }
@@ -116,8 +116,9 @@ export default class HeaderLayout extends Vue {
   goToAuth() {
     if (!this.$api.AuthService.IsLogin) {
       this.$router.push({ name: "auth" });
+    } else {
+      this.$router.push({ name: "cabinet" });
     }
-    // this.$api.AuthService.removeUserFromCookie();
   }
 
   goToHome() {
@@ -137,7 +138,11 @@ export default class HeaderLayout extends Vue {
   }
 
   get isAdvertisement() {
-    return this.$route.name === "advertisement" || this.isHomePage;
+    return (
+      this.$route.name === "advertisement" ||
+      this.isHomePage ||
+      this.$route.name === "cabinet"
+    );
   }
 }
 </script>
