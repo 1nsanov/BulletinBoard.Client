@@ -9,10 +9,12 @@
           <dropdown-header-filter :items="towns" @select="selectTown" />
           <dropdown-header-filter
             :items="categories"
+            :isImage="true"
             @select="selectCategory"
           />
           <dropdown-header-filter
             :items="subCategories"
+            :isImage="true"
             @select="selectSubCategory"
           />
         </div>
@@ -63,7 +65,13 @@ export default class HeaderLayout extends Vue {
     );
     if (category && category.subCategories) {
       this.subCategories = category.subCategories.map(
-        (x) => new OptionModel({ Id: x.id, Name: x.name, IsActive: false })
+        (x) =>
+          new OptionModel({
+            Id: x.id,
+            Name: x.name,
+            ImageUrl: x.imageUrl,
+            IsActive: false,
+          })
       );
     }
 
@@ -78,7 +86,12 @@ export default class HeaderLayout extends Vue {
     await this.$api.TownService.GetAllTown().then((res) => {
       if (res.isSuccess)
         this.towns = res.value.map(
-          (x, i) => new OptionModel({ Id: x.id, Name: x.name, IsActive: false })
+          (x, i) =>
+            new OptionModel({
+              Id: x.id,
+              Name: x.name,
+              IsActive: false,
+            })
         );
     });
   }
@@ -88,7 +101,12 @@ export default class HeaderLayout extends Vue {
       if (res.isSuccess) {
         this.categoriesData = res.value;
         this.categories = res.value.map((x, i) => {
-          return new OptionModel({ Id: x.id, Name: x.name, IsActive: false });
+          return new OptionModel({
+            Id: x.id,
+            Name: x.name,
+            ImageUrl: x.imageUrl,
+            IsActive: false,
+          });
         });
       }
     });

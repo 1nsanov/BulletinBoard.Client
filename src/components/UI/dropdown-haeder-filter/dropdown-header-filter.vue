@@ -14,6 +14,9 @@
       <div class="placeholder" v-else>
         {{ items.length === 0 ? "-" : "Не выбрано" }}
       </div>
+      <div class="preview-image" v-if="isImage && current">
+        <ui-preview-image size="50px" :image="current.ImageUrl" />
+      </div>
       <div class="close-button" v-if="current" @click.stop="reset">
         <img src="@/assets/icons/icon-cross.svg" alt="" />
       </div>
@@ -30,7 +33,8 @@
         class="list-item"
         :class="{ active: item.IsActive }"
       >
-        {{ item.Name }}
+        <span>{{ item.Name }}</span>
+        <ui-preview-image size="40px" :image="item.ImageUrl" v-if="isImage" />
       </div>
     </div>
   </div>
@@ -46,6 +50,7 @@ import OptionModel from "./models/OptionModel";
 })
 export default class DropdownHeaderFilter extends Vue {
   @Prop({ default: null }) items: OptionModel[];
+  @Prop({ default: false }) isImage: boolean;
 
   innerItems: OptionModel[] = [];
   current: OptionModel = null;
@@ -103,9 +108,11 @@ export default class DropdownHeaderFilter extends Vue {
   .placeholder-container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 8px;
     width: 100%;
     padding: 20px;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     background: rgb(46, 139, 205);
     cursor: pointer;
@@ -156,20 +163,22 @@ export default class DropdownHeaderFilter extends Vue {
     flex-direction: column;
     width: 100%;
     .list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       height: 60px;
-      line-height: 60px;
       background: rgb(37, 108, 159);
       border-left: 5px solid #fff;
-      padding-left: 20px;
+      padding: 0 10px 0 20px;
       font-size: 18px;
       transition: 0.3s ease-in-out;
       cursor: pointer;
       text-overflow: ellipsis;
       width: 100%;
-
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      span {
+        // width: 60%;
+        // text-overflow: ellipsis;
+      }
       &.active {
         background: rgb(37, 90, 159);
         border-color: rgb(33, 223, 29);
