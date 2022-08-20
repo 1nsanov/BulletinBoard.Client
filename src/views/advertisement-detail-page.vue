@@ -78,6 +78,7 @@ export default class AdvertisementDetailPage extends Vue {
   remove() {
     this.$api.AdvertisementService.RemoveAdvertisement({
       id: this.advertisement.id,
+      userId: this.$api.AuthService.User.id,
     }).then((res) => {
       if (res.isSuccess) {
         alert("Объявление успешно удалено");

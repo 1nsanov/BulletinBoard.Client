@@ -8,6 +8,7 @@ export default class UpdateAdvertisementRequest {
   categoryId: number = 0
   subCategoryId: number = 0
   townId: number = 0
+  userId: number = null;
 
   constructor(obj?: Partial<UpdateAdvertisementRequest>) {
     if (obj) Object.assign(this, obj)

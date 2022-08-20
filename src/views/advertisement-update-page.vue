@@ -214,6 +214,7 @@ export default class AdvertisementUpdatePage extends Vue {
       subCategoryId: this.advertisement.subCategoryId,
       townId: this.advertisement.townId,
       imageUrl: this.advertisement.imageUrl,
+      userId: this.$api.AuthService.User.id
     }).then((res) => {
       if (res.isSuccess) {
         alert("Объявление успешно отредактировано");
